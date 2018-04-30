@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>KeyboardSetup</title>
+  <style>
+  <!--
+    .indent1cm { margin-left: 1cm; }
+    .indent2cm { margin-left: 2cm; }
+  -->
+  </style><!--
+     $Log: KeyboardSetup.html,v $
+     Revision 1.3  2003/07/28 15:53:04  stasia
+     updated to include debounce setting
+
+     Revision 1.2  2003/03/27 18:27:43  stasia
+     Fixed italizing error;
+     Changed line endings to Unix.
+
+     Revision 1.1  2003/03/27 17:03:05  stasia
+     Help file for the KeyboardSetup windows utility.
+     Revision 1.1  2003/03/03 23:02:16  clown
+     First Checkin.
+  -->
+</head>
+<body>
+<h1>KeyboardSetup.exe</h1>
+<h2>KeyboardSetup<br>
+</h2>
+<p class="indent1cm">KeyboardSetup&nbsp;&#8212; configure Windows keyboard
+accessibility
+features </p>
+<h2>Synopsis</h2>
+<p class="indent1cm">KeyboardSetup <i>stickyKeys</i> <i>repeatKeys</i>
+<i>delay</i>
+<i>rate</i> <i>slowKeyWait debounce</i> </p>
+<h2>Description</h2>
+<p class="indent1cm">This utility can be used to configure the Windows
+keyboard
+accessibility parameters.&nbsp; </p>
+<p class="indent1cm">Invoked with no arguments, all settings are set to
+the system default. If any arguments are provided, all arguments must
+be provided. To maintain the system default, use the relevant default
+value (described below). </p>
+<h3>Parameters<br>
+</h3>
+<dl class="indent1cm">
+  <dt>stickyKeys</dt>
+  <dd>A flag to indicate whether or not to enable Sticky Keys. Use <tt>1</tt>
+to enable, <tt>0</tt> otherwise.<br>
+Default: <tt>0</tt><br>
+  </dd>
+  <dt>repeatKeys</dt>
+  <dd>A flag to indicate whether or not to enable Repeat Keys. Use <tt>1</tt>
+to enable, <tt>0</tt> otherwise.<br>
+Default: <tt>0</tt><br>
+  </dd>
+  <dt>delay</dt>
+  <dd>The length of the delay to wait before a key being held down is
+repeated
+(in milliseconds).<br>
+Default: <tt>250</tt><br>
+  </dd>
+  <dt>rate</dt>
+  <dd>The rate of repeat for a key being held down (in milliseconds).<br>
+Default: <tt>300</tt><br>
+  </dd>
+  <dt>slowKeyWait</dt>
+  <dd>The length of time a key stroke must be held down before it is
+registered
+(in milliseconds).<br>
+Default: <tt>500</tt><br>
+  </dd>
+  <dt>debounce</dt>
+  <dd>The length of time that must elapse after a key is released
+before a subsequent key press is accepted
+(in milliseconds).<br>
+Default: <tt>0</tt><br>
+  </dd>
+</dl>
+<h2>Return Value</h2>
+<p class="indent1cm">The utility prints progress information and any
+error messages to the console output. </p>
+<p class="indent1cm">Upon successful completion, the program exits with
+an exit status of 0.</p>
+<p class="indent1cm">Any error condition will result in an exit status
+of -1. </p>
+<hr style="width: 100%; height: 2px;">
+<p>Copyright &copy; 2003 Adaptive Technology Resource Centre,
+University of
+Toronto. All rights reserved.<br>
+Last modified: July 28, 2003. Anastasia Cheetham. </p>
+<br>
+<br>
+<br>
+<br>
+</body>
+</html>

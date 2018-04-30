@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en-ca"><head>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+  
+  <title>How to Write a Preference Wizard Plug-in</title><link rel="stylesheet" type="text/css" href="main.css"></head>
+<body>
+<div class="blockCentre">
+<h1>How to Write a Preference Wizard Plug-in</h1>
+<p style="font-style: italic;">David Weinkauf and Joseph Scheuhammer<br>
+Adaptive Technology Resource Centre, University of Toronto&nbsp;<br>
+</p>
+</div>
+<br>
+<h2>Table of Contents</h2>
+<ul>
+  <li><a href="#Introduction">Introduction</a></li>
+  <ul>
+    <li><a href="#ThirdPartyPreferences">Third Party Preferences</a></li>
+  </ul>
+  <li><a href="#Plug-in_Declaration_">Plug-in Declaration<br>
+    </a></li>
+  <ul>
+    <li><a href="#Plug-in_Information_">Plug-in Information</a></li>
+  </ul>
+  <li><a href="#Plug-in_API">Preference Wizard Plug-in API</a></li>
+  <ul>
+    <li><a href="#public_interface_ThirdPartyPrefsWizard_">public
+interface ThirdPartyPrefsWizard</a></li>
+    <li><a href="#MultiTypeAdaptTech">Multiple-type Adaptive Technology</a></li>
+    <li><a href="#SchemaExtensions">Schema Extensions</a></li>
+  </ul>
+  <li><a href="#Location_of_Code_and_Data"> Location of Code and Data</a></li>
+  <li><a href="#Summary">Summary</a></li>
+</ul>
+<h2><a name="Introduction"></a>Introduction</h2>
+This document describes what a developer must do to ensure that the
+Preference Wizard Manager (PWM) is able to find, load, and activate a
+preferences plug-in. It also describes how to implement the function of
+the preferences plug-in itself in terms of what information is passed
+to it, where it can acquire other relevant information, and its
+functionality. Two sources of information provide all the information
+required for the plug-in to do its job. They are: a file that declares
+properties of the plug-in and the plug-in code itself.<br>
+<h3><a name="ThirdPartyPreferences"></a>Third Party Preferences</h3>
+Third party preferences are non-generic, application specific
+preferences. They are represented in the AccLIP as the <code>&lt;param&gt;</code>
+element which is defined as:<br>
+<code><br>
+&lt;element name = "param" type = "imsacclip:paramElementType"/&gt;<br>
+&lt;complexType name = "paramElementType"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;complexContent&gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;extension base =
+"imsacclip:attributeOnlyBaseType"&gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&lt;attributeGroup ref = "imsacclip:attrParam"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/extension&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/complexContent&gt;<br>
+&lt;/complexType&gt;<br>
+&lt;attributeGroup name = "attrParam"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;attribute name = "name" use = "required" type =
+"string"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;attribute name = "value" type = "string"/&gt;<br>
+&lt;/attributeGroup&gt;<br>
+<br>
+</code>The third party preferences are children of the <code>&lt;application&gt;</code>
+element which is defined in the AccLIP as:<br>
+<br>
+<code>&lt;complexType name = "applicationElementType"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;sequence&gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;element ref =
+"imsacclip:param" minOccurs = "0" maxOccurs = "unbounded"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;any namespace = "##other"
+processContents = "strict" minOccurs = "0" maxOccurs = "unbounded"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/sequence&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;attributeGroup ref =
+"imsacclip:attrApplication"/&gt;<br>
+&lt;/complexType&gt;<br>
+&lt;attributeGroup name = "attrApplication"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;attribute name = "name" use = "required" type =
+"string"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;attribute name = "version" type = "string"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;attribute name = "priority" use = "required"
+type = "imsacclip:priorityType"/&gt;<br>
+&lt;/attributeGroup&gt;</code><br>
+<h2><a name="Plug-in_Declaration_"></a>Plug-in Declaration</h2>
+<p>A two stage process is used to load and invoke a preferences
+plug-in. In the first stage, the Control Hub loads information about all
+the available plug-ins. The second stage occurs when the Preference
+Wizard Manager is in the process of editing a user's AccLIP preferences,
+and the user wishes to change the non-generic settings for a particular
+third party application.</p>
+<h3><a name="Plug-in_Information_"></a>Plug-in Information</h3>
+<p>See the <a href="ConfigurationPlugin.html#Plug-in_Information_">Plug-in
+Information section</a> in the <a href="ConfigurationPlugin.html">Configuration
+Plug-in documentation</a>.<br>
+</p>
+<h2><a name="Plug-in_API"></a>Preference Wizard Plug-in API</h2>
+<h2><a name="public_interface_ThirdPartyPrefsWizard_"></a><code>public
+interface ThirdPartyPrefsWizard</code></h2>
+<p>Preferences plug-ins must implement a common API in order to qualify
+as a plug-in.&nbsp; The API is made up of a number of Java<span class="trademark">TM</span>&nbsp; interfaces and classes.&nbsp; The
+central API is the&nbsp;<span class="trademark"></span> interface <code>ca.utoronto.atrc.web4all.preferences.ThirdPartyPrefsWizard</code>.&nbsp;
+This section declares the methods of <code>ThirdPartyPrefsWizard</code>
+and describes their intent. The methods of <code>ThirdPartyPrefsWizard</code>
+are described in the order that the Preference Wizard Manager (PWM)
+calls them; in brief, the use case for editing third party preferences
+is as follows:</p>
+<ol>
+  <li>If preferences plug-in exists, PWM enables the "Edit Custom
+Preferences" button for the application.</li>
+  <li>User selects the "Edit Custom Preferences" button.<br>
+  </li>
+  <li>PWM gets the third party preferences for a given application from
+the user's AccLIP preferences.</li>
+  <li>PWM launches the third party preference wizard passing the
+preferences as a stand-alone XML document.</li>
+  <li>User edits his/her third party preferences and exits the plug-in.<br>
+  </li>
+  <li>PWM inserts the new third party preferences into the user's AccLIP preferences. </li>
+</ol>
+<h3>doPreferences()</h3>
+<dl>
+  <dt><code>public int doPreferences (Document io3rdPartyDoc, Locale
+inLocale);</code> </dt>
+  <dd>This method is called to do whatever is necessary to edit the
+third party preferences. For example, this usually includes launching a
+modal JDialog containing UI widgets, which encapsulate the third party
+preference settings allowing the user to select their desired
+preferences through their interaction with this dialog. The meaning of
+the arguments are as follows:
+    <dl>
+      <dt><code>Document io3rdPartyDoc</code></dt>
+      <dd>This is an XML document containing all third party
+preferences for the application. The root element of the document is
+the <code>&lt;application&gt;</code> tag corresponding to the third
+party application. The <code>&lt;application&gt;</code> tag's children
+will be the enumeration of all the third party preferences consisting
+of <code>&lt;param&gt;</code> tag(s) with <code>name</code> and <code>value</code>
+attributes as specified in the AccLIP schema. </dd>
+      <dt><code>Locale inLocale</code></dt>
+      <dd>This indicates the user's preferred locale. Any UI displayed
+should conform to this locale. Currently Web-4-All supports the
+following locales: English (Canadian) and French (Canadian) - i.e.
+en-CA and fr-CA.<br>
+      </dd>
+      <dt>Return value:</dt>
+      <dd> This is an integer, which indicates whether an error
+occurred. If no error has occurred, the plug-in returns 0. If an error
+did occur, the plug-in returns a non-zero value and no changes will be
+made to user preferences. </dd>
+    </dl>
+  </dd>
+</dl>
+<h3>kill()</h3>
+<dl>
+  <dt><code>public void kill();</code></dt>
+  <dd>This method is called to dispose of any modal dialogs <code>doPreferences()</code>
+may have launched when it was called. This method is called if a user
+ends his/her Web-4-All session while <code>doPreferences()</code> is
+still executing.<br>
+  </dd>
+</dl>
+<h3><a name="Schema Extensions"></a>Schema extensions</h3>
+The AccLIP schema allows for "strict" extensions in the children and
+attributes of most elements. One prerequisite for strict schema
+extensions defined by the &lt;any&gt; or &lt;anyAttribute&gt; tag is
+the inclusion of a top-level declaration for the available item.
+Web-4-All does not define any extended top-level ##other namespaces or
+include any extended schemas inside the AccLIP schema it validates
+against, nor does it provide a mechanism to do this programmatically
+for the third party plugins. Another prerequisite for strict schema
+extensions is the inclusion of a <span style="font-style: italic;">xsi:type</span>
+in the item. Since the AccLIP schema used in Web-4-All does not include
+top-level declarations for extended elements, the only <span style="font-style: italic;">xsi:type</span>'s allowed would be simple
+types defined in a standard XML specification, such as XML Schema. This
+is problematic for Web-4-All insofar as a user's set of preferences is
+binded to a low-memory representation before being stored on the
+smartcard. Any foreign elements pose a problem to the conversion to and
+from this binding. This is done to ensure that large-sized preferences
+will be able to fit on the small amount of memory present on the
+smartcard. The AccLIP already provides a mechanism for defining simple
+name/value types in the &lt;param&gt; element which we feel is equal to
+extended elements defined by standard XML specification built-in types
+(at least in terms of conveying information to an application).&nbsp;
+Therefore, preference wizard plug-ins are only allowed to return XML
+documents containing one root &lt;application&gt; element and zero or
+more &lt;param&gt; elements. All of these must be leaf nodes containing
+a name attribute and an optional value attribute. No <span style="font-style: italic;">xsi:type</span> extended elements are
+allowed in the third party preferences. Before inserting third party
+preferences into the user's AccLIP preferences, a validation check is
+made on the third party preferences; if the check fails, no updates are
+made to the user's AccLIP preferences.<br>
+<h3><a name="MultiTypeAdaptTech"></a>Multi-type Adaptive Technology</h3>
+A third party technology is allowed only one preferences plug-in
+regardless the number of adaptive technology types it may subsume. All
+third party preferences for a given application are stored under one
+potentially multiple <code>&lt;application&gt;</code> tags. In
+addition, all third party preferences are passed to the third party
+plug-in upon its launch regardless of the adaptive technology type in
+question.<br>
+<h2><a name="Location_of_Code_and_Data"></a>Location of Code and Data</h2>
+<p>See the <a href="ConfigurationPlugin.html#Location_of_Code_and_Data">Location
+of Code and Data section</a> in the <a href="ConfigurationPlugin.html">Configuration
+Plug-in documentation</a>. </p>
+<h2><a name="Summary"></a>Summary</h2>
+<p>This document has described the essentials of creating a preferences
+plug-in for the Web-4-All system. If the properties file and <code>ThirdPartyPrefsWizard</code>
+are implemented and located properly within the file system, then the
+Preference Wizard Manager will find the plug-in and call upon it (when
+requested by the user) to edit the relevant third party preferences.</p>
+<hr>
+<p> Copyright &copy; 2003-2006 Adaptive Technology Resource Centre,
+University of Toronto.<br>
+All rights reserved.<br>
+Last modified: Feb 20, 2006. Joseph Scheuhammer.</p>
+</body></html>

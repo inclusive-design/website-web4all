@@ -1,0 +1,40 @@
+/*[
+ * Copyright © 2003, ATRC, University of Toronto.  All rights reserved.
+ * 
+ * File:            main.css
+ *
+ * Synoposis:       Global styles for the Web-4-All Programmer's manual.
+ *
+ * $Log: main.css,v $
+ * Revision 1.2  2003/03/03 23:01:05  clown
+ * Added a log directive.  Added the 1 cm indentation style, ".indent1cm".
+ *
+ * 
+]*/
+
+/* White background for document */
+BODY {
+  background: #FFFFFF;
+}
+
+/* Centering a block of text */
+DIV.blockCentre {
+    text-align:  center;
+}
+
+/* For TM superscript */
+SPAN.trademark {
+    font-size: 10pt;
+    position:  relative;
+    top:  -5px;
+}
+
+/* For emphasizing definition terms in a definition list */
+DT.bold { 
+    font-weight: bold;
+}
+
+/* For indenting by "10 characters" */
+.indent1cm {
+    margin-left: 1cm;
+}

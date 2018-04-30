@@ -1,0 +1,149 @@
+Government of Canada
+Gouvernement du Canada
+Industry Canada Web Accessibility Office
+Web-4-All Technology Loan Agreement
+
+---------------------------------------------------------------------------
+WEB-4-ALL
+
+THIS CONTRACT made on
+
+Date: (blank field)
+
+BETWEEN: HER MAJESTY THE QUEEN IN RIGHT OF CANADA, as represented herein by
+the Minister of Industry;
+
+Hereinafter called "the Lender",
+
+OF THE FIRST PART;
+
+AND: (blank field) incorporated or registered under the laws of (blank
+field) province of Canada
+
+Hereinafter called "the Borrower".
+
+OF THE SECOND PART,
+
+PURPOSE
+
+A. the Lender, in consideration for the borrower to provide a broader
+   access of Information Technology to the Canadian Public including people
+   with disability and/or literacy challenges and the conditions
+   hereinafter stated, loans in accordance with this contract ("Loan") to
+   the Borrower the equipment described in Schedule "A" (the Equipment) for
+   use exclusively on the Borrower's premises also described in Schedule
+   "A".
+B. The Lender shall sub-licence the Web-4-All Licence from the University
+   of Toronto's Resource Centre for Academic Technology to Industry Canada
+   (hereinafter: the Licence) to the Borrower pursuant to the terms of the
+   Licence as described in Schedule "B".
+C. The Borrower shall have and hold the Equipment starting the date on
+   which the contract is signed until the date on which the Loan will
+   terminate and undertakes to respect the terms and conditions of this
+   Loan.
+
+TERMS AND CONDITIONS A. EQUIPMENT
+
+1. The Borrower shall not make any assignment or sale of this Loan, or of
+   the Equipment.
+2. The Borrower shall not have any claim or demand against the Lender for
+   detriment, damage or injury of any nature by or to the Equipment.
+3. The Equipment shall be used exclusively for the provide members of the
+   public who have disability and/or literacy challenges with access to
+   computers and the Internet.
+4. The Borrower shall, at all times during the currency of this Loan,
+   maintain the said Equipment in good condition and the Lender shall have
+   the right to have the said Equipment inspected at any reasonable time by
+   a representative of the Lender.
+5. The Equipment remains the property of Industry Canada.
+6. Upon written request from the Lender to terminate this Loan, the
+   Borrower shall return the Equipment to the Lender or its representative,
+   in good condition, subject to normal wear and tear.
+7. The Borrower shall, at all time, indemnify and save harmless the Lender
+   from and against all claims, loss, costs, damages, actions, suits or
+   other proceedings by whomsoever made, brought or prosecuted, in any
+   manner based upon, occasioned by or attributable to the execution of
+   these Presents, or any action taken or things done or maintained by
+   virtue hereof, or the exercise in any manner of rights arising
+   hereunder, except claims for damage resulting from the negligence of any
+   officer or servant of Her Majesty in right of Canada while acting within
+   the scope of his duties of employment.
+8. It is agreed that this Contract is binding on the Parties, and their
+   successors and permitted assigns.
+9. No member of the Parliament of Canada will be admitted to any share or
+   part of any contract, agreement or commission made pursuant to this Loan
+   or to any benefit arising therefrom.
+10. The Borrower represents and warrants that any person who lobbies on its
+   behalf to obtain this Agreement, or any benefit thereunder, and who is
+   required to be registered pursuant to the Lobbyists Registration Act
+   R.S. 1985, c.44 (4th Supplement) is registered pursuant to that Act.
+
+B. SUB-LICENCE
+
+1. The Lender hereby grants to the Borrower a non exclusive, fully paid,
+   and royalty-free sub-license to exercise the Intellectual Property
+   Rights (IP rights) in the Licence so long as the IP rights are located
+   in the Equipment and only for the duration of the Loan.
+2. This sub-licence is subordinate to the general conditions of the
+   Licence. Any revocation of the Licence shall automatically entail the
+   revocation of this sub-licence.
+3. The Borrower shall not have the right to sub-licence the sub-licence or
+   otherwise authorize any party to exercise any of the IP rights in either
+   the Licence or this sub-licence.
+4. The Borrower undertakes to destroy at the end of this Loan any extra
+   copy of the sub-licenced IP rights arising from this Loan.
+5. Any infringement of the terms of this sub-licence shall automatically
+   entail its revocation.
+
+IN WITNESS WHEREOF the parties hereto have executed these Presents the day
+and year first above written.
+
+
+SIGNED, SEALED AND DELIVERED by the Lender in the presence of-
+
+(blank field)
+Witness
+
+(blank field)
+For the Lender
+
+SIGNED, SEALED AND DELIVERED by the Borrower in the presence of -
+
+(blank field)
+Witness
+
+(blank field)
+For the Borrower
+
+SCHEDULE A EQUIPMENT LIST AND LOCATION
+
+#___ Complete Package(s) Containing:
+
+DESCRIPTION OF THE EQUIPMENT:
+
+• 1 Kensington Orbit Trackball
+• 1 External Serial Port Hitachi Card Reader
+• 1 Installation CD containing software to the Web-4-All Program, and
+  Opera, HomePage
+• Reader, eReader and Visual Dynamic Keyboard Program
+• User Training Materials in braille, large print, and audio tape
+• Installation and Technical Support Manual
+
+Please List Serial #(s) below:
+
+_____________________________
+
+_____________________________
+
+_____________________________
+
+LOCATION WHERE THE GOODS WILL BE KEPT: (Contact Name and Address)
+___________________________________________
+
+___________________________________________
+
+DATE OF RECEIPT IN GOOD WORKING ORDER:
+
+___________________________________________
+
+---------------------------------------------------------------------------

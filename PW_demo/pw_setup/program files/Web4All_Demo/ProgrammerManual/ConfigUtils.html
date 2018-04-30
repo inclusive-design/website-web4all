@@ -1,0 +1,810 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head>
+  
+  
+  
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+
+
+  
+  
+  
+  <link rel="stylesheet" type="text/css" href="main.css"><title>Configuration Utilities</title><!--
+    $Log: ConfigUtils.html,v $
+    Revision 1.9  2003/03/27 19:43:35  clown
+    Fixed broken internal link.
+
+    Revision 1.8  2003/03/26 22:22:32  clown
+    Fixed broken links.
+
+    Revision 1.7  2003/03/25 17:36:02  clown
+    Slight reorganization to make things clearer.
+
+    Revision 1.6  2003/03/25 06:45:54  clown
+    Incorporated Bruce's edits.
+
+    Revision 1.5  2003/03/17 03:07:31  clown
+    Replaced references to "PreferenceState" with "ParameterState".
+
+    Revision 1.4  2003/03/10 17:42:02  clown
+    Added "back to top" links.
+
+    Revision 1.3  2003/03/10 15:53:56  clown
+    Grammar, spelling, and reorganization.  Added a log directive.
+
+
+--></head><body>
+<div class="blockCentre">
+<h1>Configuration Plug-in Utilities<br>
+</h1>
+<p style="font-style: italic;">Joseph Scheuhammer<br>
+Adaptive Technology Resource Centre, University of Toronto<br>
+February 28, 2003 </p>
+</div>
+
+
+
+<h2><a name="Table_of_Contents"></a>Table of Contents</h2>
+
+
+
+<ul>
+
+
+
+  <li><a href="#Introduction">Introduction</a></li>
+  <li><a href="#Property_Utilities">Property Utilities</a></li>
+  <ul>
+    <li><a href="#Properties_via_the_Control_Hub">Properties via the
+Control Hub</a></li>
+    <li><a href="#Local_properties_-_class">Local Properties - class
+AbstractSetterLauncher</a></li>
+  </ul>
+  <li><a href="#Method_Utilities_">Method Utilities</a></li>
+  <ul>
+    <li><a href="#Nomenclature">Nomenclature</a></li>
+    <li><a href="#class_AbstractSetterLauncher">class
+AbstractSetterLauncher</a></li>
+    <ul>
+      <li><a href="#Translation">Translation</a></li>
+      <ul>
+        <li><a href="#Value_Maps">Value Maps</a></li>
+        <li><a href="#Linear_Transformations">Linear Transformations</a></li>
+      </ul>
+      <li><a href="#Parameter_Writing">Parameter "Writing"</a></li>
+    </ul>
+    <li><a href="#Implementing_doSettings">Implementing <code>doSettings()</code></a></li>
+    <ul>
+      <li><a href="#Generic_Loop">Generic Loop</a></li>
+      <li><a href="#Specific_Loop">Specific Loop</a></li>
+    </ul>
+    <li><a href="#Implementing_doLaunch">Implementing <code>doLaunch()</code></a></li>
+    <li><a href="#Implementing_kill_">Implementing <code>kill()</code></a></li>
+  </ul>
+  <li><a href="#Summary">Summary</a><br>
+  </li>
+</ul>
+
+
+
+<h2><a name="Introduction"></a>Introduction</h2>
+
+
+
+<p>The previous documents described the minimum requirements for
+implementing a plug-in such as drawing up a properties file in the
+correct way and implementing a plug-in interface. For configuration
+plug-ins, however, the Web-4-All jar also includes a library of code
+that encapsulates a variety of common operations.&nbsp; The package <code>ca.utoronto.atrc.web4all.configuration</code>
+provides a set of utilities that facilitate plug-in
+implementation.&nbsp; In addition, the Control Hub provides functions
+that retrieve information defined by the plug-in's ".properties" file.<br>
+</p>
+
+
+
+<p>This document describes these supports available to a developer when
+implementing a configuration plug-in.&nbsp; The Control Hub's
+information retrieval functions are discussed first.<br>
+</p>
+
+
+
+<p><a href="#Table_of_Contents">back to top</a><br>
+</p>
+
+
+
+<h2><a name="Property_Utilities"></a>Property Utilities</h2>
+
+
+
+<p>When the Web-4-All system launches, it locates plug-ins by examining
+the "3rd_party" folder, looking for ".properties" files.&nbsp; It is
+assumed that each file defines the characteristics of a plug-in.&nbsp;
+The Control Hub loads each property file, and stores it according to
+both its "appID" and "appType" properties.&nbsp; This enables plug-ins
+to access their core and local properties by querying the Control
+Hub.&nbsp; The following section, "<a href="#Properties_via_the_Control_Hub">Properties via the Conrol Hub</a>",
+describes the methods of the ControlHub that a plug-in can use to
+recover its core properties.&nbsp; The section following that, "<a href="#Local_properties_-_class">Local Properties - class
+AbstractSetterLauncher</a>", describes how the plug-in can access its
+local properties.<br>
+</p>
+
+
+
+<h3><a name="Properties_via_the_Control_Hub"></a>Properties via the
+Control Hub</h3>
+
+
+
+<p>Each core property is listed below along with a corresponding
+Control Hub method.&nbsp; The Control Hub method provides access to the
+core property.&nbsp; Note that all properties are read only.&nbsp; Note
+also that the first property, appID, is not retrieved from the Control
+Hub, but from the <code>AccLipInfoPackage</code> instance used to
+"call" the plug-in.<br>
+</p>
+
+
+
+<dl><dt>appID </dt><dd>The appID, or application name, is taken from an <code>AccLipInfoPackage</code>
+and then passed to the plug-in via the <code>AccLipInfoPackage.getSpecificPrefs()</code>
+method which returns the <code>&lt;application&gt;</code> element from
+the ACCLIP.&nbsp; One of the attributes of that element is a <code>name</code>
+attribute, whose value is the appID.<br>
+    <hr style="width: 100%; height: 2px;">Note:&nbsp;&nbsp; The class <code>AbstractSetterLauncher</code>
+has a <code>setAppID()</code> method, that takes an <code>&lt;application&gt;</code>
+element as input and determines the appID from it.&nbsp; Thus, a plug-in
+derived from <code>AbstractSetterLauncher</code> can call <code>AccLipInfoPackage.getSpecificPrefs()</code>,
+passing the returned value to <code>setAppID()</code> to retrieve the
+application name from the preferences document, and store it within the
+plug-in.
+    <hr style="width: 100%; height: 2px;"><br>
+  </dd><dt>appType </dt><dd>
+  <dl><dt><code>public Vector get3rdPartyAppTypes (String inAppID) throws
+MissingResourceException</code></dt><dd>Given the appID, the Control Hub
+returns a list of application types, each as a <code>String</code>.</dd></dl>
+  </dd><dt>prefs </dt><dd><dl><dt><code>public String get3rdPartyPrefsClass (String inAppID) throws
+MissingResourceException;</code></dt><dd>Given the appID, the Control Hub
+returns the fully qualified name of the Java <span class="trademark">TM</span>
+object that implements <code>interface ThirdPartyPrefsWizard</code>.</dd></dl></dd><dt>config </dt><dd><dl><dt><code>public String get3rdPartyConfigClass (String inAppID)
+throws MissingResourceException</code>;</dt><dd>Given the appID, the
+Control Hub returns the fully qualified name of the Java <span class="trademark">TM</span> object that implements <code>interface
+SetterLauncher</code>.</dd></dl>
+  </dd><dt>exec </dt><dd><dl><dt><code>public String get3rdPartyExecutable (String inAppID) throws
+MissingResourceException</code>;</dt><dd>Given the appID, the Control Hub
+returns the path to the executable.  For example, if the plug-in
+launches the "EpiScreen" application, then this property defines where
+"EpiScreen" is on the local file system.</dd></dl>
+  </dd><dt>ini </dt><dd><dl><dt><code>public String get3rdPartyIni (String inAppID) throws
+MissingResourceException</code>;</dt><dd>Given the appID, the Control Hub
+returns the path to the initialization file.</dd></dl>
+  </dd><dt>product.name </dt><dd><dl><dt><code>public String get3rdPartyFullProductName (String inAppID)</code>;</dt><dd>Given the appID, the Control Hub returns the product name.</dd></dl>
+  </dd></dl>
+
+
+
+<p><a href="#Table_of_Contents">back
+to top</a><br>
+</p>
+
+
+
+<h3><a name="Local_properties_-_class"></a>Local properties - class AbstractSetterLauncher</h3>
+
+
+
+<p>As noted earlier, the configuation plug-in API is defined by <code>interface
+ca.utoronto.atrc.web4all.configuration.SetterLauncher</code>.&nbsp;
+That interface has a method <code>initLocalProps()</code>.&nbsp; Since
+the local properties are understood only by the plug-in, implementors
+have complete control over how they define these properties, and how to
+use them.&nbsp; Web-4-All does not constrain the implementation of <code>initLocalProps()</code>
+in any way.&nbsp; However, the class <code>ca.utoronto.atrc.web4all.configuration.AbstractSetterLauncher</code>
+defines a default way of initializing the plug-in's local properties,
+and a default method for acquiring a property.</p>
+
+
+
+<p>It works as follows:&nbsp; The Control Hub has a method allowing
+plug-ins access to their local properties.&nbsp; This method's
+signature is:<br>
+</p>
+<blockquote><code>public ResourceBundle get3rdPartyProperties (String inAppID) throws MissingResourceException;</code></blockquote>
+<p>The plug-in provides its appID, and the
+Control Hub returns <em>all</em> of the properties for that application
+as a <code>java.util.ResourceBundle</code>.&nbsp; If no such
+application exists as defined by the <code>inAppID</code> argument,
+then a <code>java.util.MissingResourceException</code> is thrown.<br>
+</p>
+
+
+
+<p><code>AbstractSetterLauncher</code> implements <code>initLocalProps()</code>
+by calling the Control Hub's <code>get3rdPartyProperties()</code>, and
+then storing that <code>ResourceBundle</code> locally.&nbsp; If the
+plug-in needs to do more than this, then a sub-class can override this
+behaviour by first using it as is, and then adding the required extra functionality.<br>
+</p>
+
+
+
+<p><code>AbstractSetterLauncher</code> also provides a utility method
+for acquiring a given local property.&nbsp; A plug-in derived from <code>AbstractSetterLauncher</code>
+can use this to acquire a known local property.&nbsp; The method's
+signature is:<br>
+</p>
+<blockquote><code>protected String getLocalProperty (String inPropName) throws MissingResourceException;<br>
+</code></blockquote>
+<p><code></code>By passing the name of the property, its value is
+returned, if any such property exists.&nbsp; If not, then a <code>MissingResourceException</code>
+is thrown.&nbsp; Note that <code>AbstractSetterLauncher</code> expects
+that its <code>initLocalProps()</code> method to have been called prior
+to using the <code>getLocalProperty()</code> method; that is, the
+properties must have been stored internally before they are queried.<br>
+</p>
+
+
+
+<p><a href="#Table_of_Contents">back
+to top</a><br>
+</p>
+
+
+
+<h2><a name="Method_Utilities_"></a>Method Utilities<br>
+</h2>
+
+
+
+<h3><a name="Nomenclature"></a>Nomenclature</h3>
+
+
+
+<p>In order to distinguish between technology settings as the technology itself uses them, and
+the corresponding preferences in the ACCLIP, they are described in two
+ways in this document.&nbsp; The terms "preference" and "preference
+value" refer to the preference in the ACCLIP document.&nbsp; The terms
+"parameter" and "setting" refer to the way a third party technology
+represents that preference.&nbsp; Both preferences and parameters have
+two aspects: a name and a value.&nbsp; For example, suppose the ACCLIP
+has an alternative pointing device <em>preference</em> whose <em>name</em>
+is "doubleClickSpeed" and whose <em>value</em> is&nbsp; "0.4".&nbsp;
+That preference maps to the Kensington Trackball <em>parameter</em> <em>named</em>
+"DBL_CLICK_SPEED" and to the <em>value</em> "416".<br>
+</p>
+
+
+
+<p>In summary, "preference" refers to some content within the ACCLIP,
+"parameter" or "setting" to a third-party technology setting, "name" to
+the name of a preference or parameter, and "value" to its value.<br>
+</p>
+
+
+
+<h3><a name="class_AbstractSetterLauncher"></a>class
+AbstractSetterLauncher</h3>
+
+
+
+<h4><a name="Translation"></a>Translation<br>
+</h4>
+
+
+
+<p>What does a configuration plug-in do?&nbsp; Most of the work
+involves translating the preferences as defined in the ACCLIP schema to
+a form that a specific technology can use.&nbsp; The complexity of the
+translation ranges from simple and straightforward to complicated and
+involved.&nbsp; An example of the simple case is where the ACCLIP
+encodes volume as a floating point value in the range [0.0, 1.0].&nbsp;
+A gvien technology might represent volume as a signed single byte
+integer in the range [-127, 128].&nbsp; The translation from the ACCLIP
+to the technology's setting is a simple linear relationship.&nbsp; At
+the other extreme, speech pitch is represented as a relative value,
+again in the range [0.0, 1.0], in the ACCLIP.&nbsp; To represent a
+relatively low pitch, say 0.2, a speech synthesizer might be configured
+to use an adult male voice.&nbsp; Similarly, a high-pitched voice is
+achieved by using a woman's or perhaps a child's voice.<br>
+</p>
+
+
+
+<h5><a name="Value_Maps"></a>Value Maps<br>
+</h5>
+
+
+
+<p><code>AbstractSetterLauncher</code> has a mechanism for performing
+arbitrarily complex translation via a mapping lookup table.&nbsp; That
+is, a plug-in derived from <code>AbstractSetterLauncher</code> can
+install any number of "value maps", a "value map chooser", and a "name
+map".<br>
+</p>
+
+
+
+<p>A <em>value map</em> is a lookup table that defines a relationship
+between the ACCLIP preference value and technology's setting.&nbsp;
+Using the voice pitch example from the previous paragraph, the plug-in
+could use a "voice pitch value map" that maps floating point pitch
+values to various synthesizer voices.<br>
+</p>
+
+
+
+<p>The <em>value map chooser</em> is another lookup table that, given
+an technology parameter name, chooses the appropriate value map.&nbsp;
+This is most useful when the plug-in employs a number of different
+value maps for each distinct preference.&nbsp; In this case, the lookup
+is performed based on the technology parameter name:&nbsp; Again, using
+the voice pitch example, the plug-in sees that there is a "pitch"
+preference in the ACCLIP.&nbsp; It passes the corresponding parameter
+name to <code>AbstractSetterLauncher</code>'s value map chooser, which
+looks up the correct value map (here, the pitch map), and then
+determines the parameter value from the map and the ACCLIP value.&nbsp;
+This results in the correct parameter value.<br>
+</p>
+
+
+
+<p>Finally, there is a third type of map that associates ACCLIP
+preference names with technology parameter names.&nbsp; This map is
+termed a <em>name map</em>.<br>
+</p>
+
+
+
+<p>If you wish to use <code>AbstractSetterLauncher</code>'s value map
+machinery, there are some restrictions.&nbsp; With respect to the value
+maps and value map chooser, a plug-in can define them in any way it sees
+fit, however, they must be derived from <code>java.util.ResourceBundle</code>.&nbsp;
+The name map, however, must be a <code>ca.utoronto.atrc.web4all.configuration.SettingsBundle</code>,
+or be derived from that class.<br>
+</p>
+
+
+
+<p>A <code>SettingsBundle</code> is a <code>java.util.ListResourceBundle</code>
+with one extra feature.&nbsp; It has a technology-type characteristic,
+and a method to query it for that type (<code>SettingsBundle.getTechType()</code>).&nbsp;
+The ACCLIP schema defines the type returned.<br>
+</p>
+
+
+
+<p>Recall that a technology can satisfy more than one type, e.g., it
+can be both a screen reader and a screen enhancer.&nbsp; Since a
+technology might by multi-type, its configuration plug-in would need to
+define distinct <code>SettingsBundle</code> instances for each
+type.&nbsp; This is consistent with the information passed to the
+plug-in in the form of a list of <code>AccLipInfoPackage</code>
+instances.&nbsp; Each of these is defined in terms of a technology type
+as well.&nbsp; There should be a one-to-one correspondence between the <code>AccLipInfoPackage</code>
+technology types, and the <code>SettingsBundle</code> types.<br>
+</p>
+
+
+
+<p>The <code>SettingsBundle</code> object contains a lookup table whose
+keys are ACCLIP preferences names.&nbsp; The value associated with each
+key is an instance of a <code>ca.utoronto.atrc.web4all.configuration.ParameterState</code>.&nbsp;
+A <code>ParameterState</code> object is an object that maintains an
+association between a parameter name, whether that parameter has been
+"written", whether it is required that it be written, and its default
+value.&nbsp; For the moment, consider only the parameter name:&nbsp; the <code>SettingsBundle</code>
+performs the function of mapping the ACCLIP preference name to a
+specific technology's parameter name.&nbsp; That parameter name is then
+used in conjunction with the value map chooser to locate the
+appropriate value map.<br>
+</p>
+
+
+
+<p>In a nutshell, here is how a plug-in uses <code>AbstractSetterLauncher</code>'s
+value map system.&nbsp; First, create a <code>ResourceBundle</code> for
+each of the technology's settings, that maps an ACCLIP preference value
+to a technology's parameter value.&nbsp; Each constitutes a <em>value
+map</em>.<br>
+</p>
+
+
+
+<p>Second, create another <code>ResourceBundle</code> whose keys are
+the technology parameter names.&nbsp; Each name maps to one of the value maps
+created in step one.&nbsp; This is the <em>value map chooser</em>.<br>
+</p>
+
+
+
+<p>Third, create a <code>SettingsBundle</code> whose keys are the names
+of ACCLIP preferences, and whose values are <code>ParameterState</code>
+objects that each contains a parameter name.&nbsp; These parameter names
+are inputs to the value map chooser created at step two.&nbsp; Create
+one such <code>SettingsBundle</code> for each type of technology that
+the plug-in handles.&nbsp; An algorithm for mapping from an ACCLIP
+preference to a technology setting is as follows:<br>
+</p>
+
+
+
+<ol>
+
+
+
+  <li>Retrieve the technology type from the <code>AccLipInfoPackage</code>.</li>
+  <li>Use the technology type to choose a <code>SettingsBundle</code>.</li>
+  <li>Given an ACCLIP preference name, use the <code>SettingsBundle</code>
+to retrieve a <code>ParameterState</code>, and, from it, the
+corresponding parameter name.</li>
+  <li>Use that parameter name and the value map chooser to choose the
+correct value map.</li>
+  <li>Given an ACCLIP preference value, use the value map to transfrom
+it into the correct parameter value.</li>
+  <li>Set the technology's parameter with that value.</li>
+</ol>
+
+
+
+<p>With the proper initialization, <code>AbstractSetterLauncher</code>
+performs steps one through five "for free".&nbsp; The initialization is
+accomplished via the methods:<br>
+</p>
+<blockquote><code>protected void init();</code> and<br><code>protected void
+setUpParameters (SettingsBundle[] inParams, ResourceBundle
+inValueMapChooser);</code></blockquote>
+<p>The former is abstract, and must be
+implemented in the derived class.&nbsp; It is advised that, at least,
+the derived class call the <code>setUpParameters()</code> method from
+its <code>init()</code> method.&nbsp; The first argument is an array of <code>SettingsBundle</code>
+objects, where each member of the array is distinct in terms of a type
+of technology.&nbsp; The second argument is the value map chooser, i.e.
+the lookup table that maps parameter names to value maps.<br>
+</p>
+
+
+
+<p>The sequence outlined above is accomplished by a number of <code>AbstractSetterLauncher</code>'s
+methods.&nbsp; Steps two and three are handled by the <code>findParameter()</code>
+methods.&nbsp; Steps four and five by the<code> mapValue()</code>
+method.&nbsp; Steps two through five are effectively accomplished by <code>handlePref()</code>,
+by essentially calling <code>findParameter()</code> and <code>mapValue()</code>
+in succession.&nbsp; All of these methods are are fully documented in
+the <a href="javaDocs/index.html" title="Web-4-All Plugin API">plug-in API documentation</a>.<br>
+</p>
+
+
+
+<h5><a name="Linear_Transformations"></a>Linear Transformations<br>
+</h5>
+
+
+
+<p>Value maps are useful for complex relationships between ACCLIP
+preference values and an application's parameter values.&nbsp;
+Frequently, there is a simpler mathematical equation that will transform
+an preference value to the correct parameter setting.&nbsp; <code>AbstractSetterLauncher</code>
+provides one of these; specifically, a method that performs a linear
+transform.&nbsp; Its signature is:<br>
+</p>
+<blockquote><code>public float linearCalcTechVal (String inAccLipVal, float
+inSlope, float inIntercept);
+</code></blockquote>
+<p><code></code>The
+caller passes in the ACCLIP value (<span style="font-style: italic;">x</span>),
+a slope (m), and intercept (b).&nbsp; The method returns the value (<span style="font-style: italic;">y</span>) transformed according to the
+linear equation <span style="font-style: italic;">y</span> = m<span style="font-style: italic;">x</span> + b.<br>
+</p>
+
+
+
+<p><a href="#Table_of_Contents">back
+to top</a><br>
+</p>
+
+
+
+<h4><a name="Parameter_Writing"></a>Parameter "Writing"<br>
+</h4>
+
+
+
+<p>Once the translation is complete, the technology's setting must be
+realized.&nbsp; In our experience, there are two ways to accomplish
+this.&nbsp; First, some technologies take their settings from an
+initialization file; for example, on Windows, a file with the extension
+".ini".&nbsp; This is a text file consisting of parameter names and
+values.&nbsp; When the technology starts up, it configures itself
+according to the contents of this ".ini" file.<br>
+</p>
+
+
+
+<p>Secondly, some technologies use "registry" values as their parameter
+settings.&nbsp;&nbsp; In that case, it is useful to translate the ACCLIP
+preferences into an array of in-memory parameter values, which are then
+transferred to the appropriate place in the registry.<br>
+</p>
+
+
+
+<p><code>AbstractSetterLauncher</code> provides methods for both writing
+to an initialization file, and installing settings into a
+registry.&nbsp; The former is accomplished via the <code>createOutput()</code>
+methods, and the <code>writeSetting()</code> methods.&nbsp; The latter
+by the methods <code>createArgsArray()</code>, <code>setArgsArray()</code>,<code>
+setArgsIndexMap()</code>, and <code>addArgToArray()</code>.<br>
+</p>
+
+
+
+<p>If your plug-in requires an initialization file, use one of the <code>createOutput()</code>
+methods to create the initialization file. The difference in the methods
+is that they provide different ways of defining the path to the
+intialization file.&nbsp; In one case, the path is relative to the
+directory from which Web-4-All was launched.&nbsp; In a second case, it
+is relative the the Web-4-All's plug-in folder.&nbsp; Finally, a full
+path to the file can be specified.&nbsp; In all cases, <code>createOutput()</code>creates
+and records the file, and returns it as a <code>java.io.PrintWriter</code>.&nbsp;
+The <code>writeSetting()</code> methods use this <code>PrintWriter</code>
+to output the parameter name and its value.&nbsp; These ".ini" related
+methods are are fully documented in the <a href="javaDocs/index.html" title="Web-4-All Plugin API">plug-in API documentation</a>. </p>
+
+
+
+<p>An alternative technique to writing parameters to a file is one that uses an in-memory
+argument array, and is based on the idea that a command line utility
+will be used to transfer the settings to something similar to a
+registry.&nbsp; The command line arguments are represented as a <code>String</code>
+array.&nbsp; The array can either be created by using <code>createArgsArray()</code>,
+or passed in if <code>setArgsArray()</code> is used.<br>
+</p>
+
+
+
+<hr style="width: 100%; height: 2px;">
+<p> Note:&nbsp; The use of a command line utility to write settings to a
+"registry" was employed to avoid specifically committing to the Windows
+regsitry.&nbsp; The <code>AbstractSetterLauncher</code> class could have
+been implemented such that it transferred relevant parameter settings
+directly to the registry, but that would not have been platform
+neutral.&nbsp; By deferring the writing of the "registry" to a command
+line utility, the transfer utility can move the settings wherever it is
+appropriate.<br>
+</p>
+
+
+
+<hr style="width: 100%; height: 2px;">
+<p>It is assumed that the argument array is positional, e.g., that the
+third argument represents, say, the volume setting.&nbsp; As such, there
+must also exist a technique that, based on the parameter, places the
+setting in the correct position of the array.&nbsp;&nbsp; Plug-ins that
+use the argument array feature of <code>AbstractSetterLauncher</code>
+must also provide an index map via the <code>setArgsIndexMap()</code>
+method.&nbsp; The argument index map is a <code>ResourceBundle</code>
+whose keys are parameter names, and whose value is the index in the
+argument array for that parameter.&nbsp; The place to initialize the
+arguments index map is in the plug-in's implementation of <code>init()</code>.&nbsp;
+When <code>addArgToArray()</code> is called, it will use the parameter
+name and argument index map to place the parameter value in the proper
+position of the argument array.</p>
+
+
+
+<p>When all preferences have been processed, the completed argument
+array can be retrieved via the <code>getArgsArray()</code> method.&nbsp;
+At that point, it is up to the plug-in to do what is necessary with the
+argument list.&nbsp; That is, <code>AbstractSetterLauncher</code> does
+not define any method to transfer the settings to the "registry"; it
+only provides a means to collect the settings.&nbsp; Like the
+initialization file writing methods, these argument array methods are
+fully described in the <a href="javaDocs/index.html" title="Web-4-All Plugin API">plug-in API documentation</a>. </p>
+
+
+
+<p>Finally, the reader might wonder why <code>AbstractSetterLauncher</code>
+has a set of methods both for writing settings to an initialization
+file, and another set for creating an positional parameter list.&nbsp;
+Why not factor this functionality out between two implementations of
+interface <code>SetterLauncher</code>?&nbsp; The answer is that some
+plug-ins require both techniques for "writing" settings.&nbsp; That is,
+some plug-ins will write certain settings to an initialization file, and
+other settings to a registry.&nbsp; Placing the writing utilities all
+in a single class allows a derived class to write exclusively to an
+initialization file, or exclusively to a registry, or to both.<br>
+</p>
+
+
+
+<p><a href="#Table_of_Contents">back
+to top</a><br>
+</p>
+
+
+
+<h3><a name="Implementing_doSettings"></a>Implementing interface
+SetterLauncher.doSettings()</h3>
+
+
+
+<p><code>doSettings()</code> is one method that <code>AbstractSetterLauncher</code>
+does <em>not</em> implement.&nbsp; However, <code>AbstractSetterLauncher</code>
+does implement a number of other methods out of which an implementation
+of <code>doSettings()</code> can be built.<br>
+</p>
+
+
+
+<p>Conceptutally, <code>doSettings()</code> amounts to examining the
+ACCLIP preferences passed to it, translating them, and writing the
+translations.&nbsp; The ACCLIP contains a set of generic preferences,
+and, potentially, a set of technology-specific preferences.&nbsp; <code>AbstractSetterLauncher</code>
+defines two loop methods, one for handling the generic settings, and
+another for the specific settings.<br>
+</p>
+
+
+
+<h4><a name="Generic_Loop"></a>Generic Loop</h4>
+
+
+
+<p>The signature of the generic loop method is:<br>
+</p>
+<blockquote><code>protected void loopThruGenerics (String inTechType, Element
+inGenericContainer);
+</code></blockquote>
+<p>Note that the first argument defines the type of technology (e.g.,
+onscreen keyboard). For each generic preference in the <code>inGenericContainer</code>,<code>loopThruGenerics()</code>
+does the following:<br>
+</p>
+
+
+
+<ol>
+
+
+
+  <li>Map the name of ACCLIP preference to the technology's parameter
+name.</li>
+  <li>Retrieve the value of the preference.</li>
+  <li>Map that value to the parameter's value.</li>
+  <li><em>Write</em> out the parameter value.</li>
+</ol>
+
+
+
+<p>Note the emphasis on "Write" in step&nbsp; four.&nbsp; At this
+point, <code>loopThruGenerics()</code> dispatches to the method <code>doWriteSetting()</code>,
+which is another abstract method of <code>AbstractSetterLauncher</code>.&nbsp;
+Its signature is:<br>
+</p>
+<blockquote><code>protected void doWriteSetting (String inProperty, String
+inValue);<br>
+</code></blockquote>
+<p>where <code>inProperty</code> is a
+parameter name, and <code>inValue</code> is its value.&nbsp; <code>doWriteSetting()</code>
+can be implemented by calling one of the <code>writeSetting()</code>
+methods described above, or the <code>addArgToArray()</code> method, or
+both as required.&nbsp; This is why <code>doWriteSetting()</code> is
+abstract -- how a specific plug-in actually outputs the setting cannot
+be known by <code>AbstractSetterLauncher</code>.&nbsp; It is up to the
+implementor of the plug-in to determine how the setting is "written";
+and, they can make use of the two utility methods that "write" the
+setting.<br>
+</p>
+
+
+
+<h4><a name="Specific_Loop"></a>Specific Loop</h4>
+
+
+
+<p>The corresponding loop for specific settings, <code>loopThru3rdPartyPrefs()</code>,
+is identical&nbsp; in control flow to <code>loopThruGenerics</code>.&nbsp;
+It is defined as a separate method, however, since it is likely that an
+implementation of a plug-in will want to keep <code>loopThruGenerics</code>
+as is, while completely replacing the technique for handling specific
+settings.&nbsp; <br>
+</p>
+
+
+
+<p><a href="#Table_of_Contents">back
+to top</a><br>
+</p>
+
+
+
+<h3><a name="Implementing_doLaunch"></a>Implementing interface
+SetterLauncher.doLaunch()</h3>
+
+
+
+<p>As with <code>doSettings()</code>, <code>AbstractSetterLauncher</code>
+does not define the <code>doLaunch()</code> method of <code>interface
+SetterLauncher</code>.&nbsp; However, there are associated methods that
+sub-classes should use to track the result of a <code>doLaunch()</code>.<br>
+</p>
+
+
+
+<p>It is assumed that plug-ins will make use of the <code>java.lang.Runtime()</code>
+object and its <code>exec()</code> method to actually launch the third
+party technology.&nbsp; <code>Runtime.exec()</code> returns an object of
+type <code>java.lang.Process</code>.&nbsp; <code>AbstractSetterLauncher</code>
+defines the utilities <code>setProcess()</code> and a<code> getProcess() </code>in
+order to make it easy for a sub-class to keep track of that <code>Process</code>,
+if required.&nbsp; In addition to tracking the <code>Process</code>
+launched, they are useful for the <code>SetterLauncher.kill()</code>
+method.<br>
+</p>
+
+
+
+<h3><a name="Implementing_kill_"></a>Implementing interface
+SetterLauncher.kill()<br>
+</h3>
+
+
+
+<p><code>AbstractSetterLauncher</code> does provide a basic
+implementation of the <code>kill()</code> method.&nbsp; This amounts to
+shutting down the <code>Process</code> created by <code>doLaunch()</code>.&nbsp;
+This simple shutdown of the process is not suffiicent in most
+cases.&nbsp; Sub-classes should override <code>kill()</code> to first
+reset the third party technology to some default state before killing
+the process.&nbsp; As such, an override of <code>kill()</code> should be
+written to first reset the technology's configuration, and then call <code>AbstractSetterLauncher</code>'s
+version of <code>kill()</code> to actually shut it down.<br>
+</p>
+
+
+
+<h2><a name="Summary"></a>Summary</h2>
+
+
+
+<p>This document has described various utility methods of the Control
+Hub and the <code>AbstractSetterLauncher</code> class that are useful
+for implementing a configuration plug-in.&nbsp; It described how to
+retrieve global properties of the plug-in from the Control Hub, and how
+to use the basic implementation in <code>AbstractSetterLauncher</code>
+to acquire its local properites.&nbsp; It also described utilities that <code>AbstractSetterLauncher</code>
+provides for, namely:<br>
+</p>
+
+
+
+<ul>
+
+
+
+  <li>translating between ACCLIP preferences and technology parameters.</li>
+  <li>ways of "writing" the technology settings; and,<br>
+  </li>
+  <li>aiding the implementation of the methods of <code>interface
+SetterLauncher</code>.</li>
+</ul>
+
+
+
+<p><a href="#Table_of_Contents">back
+to top</a><br>
+</p>
+
+
+
+<hr>
+<p> Copyright &copy; 2003 Adaptive Technology Resource Centre,
+University of Toronto.<br>
+All rights reserved.<br>
+Last modified: Mar 25, 2003. Joseph Scheuhammer. </p>
+
+
+
+</body></html>

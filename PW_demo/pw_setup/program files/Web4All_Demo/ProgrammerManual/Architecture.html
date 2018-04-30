@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>Web-4-All Architecture</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+  <link rel="stylesheet" type="text/css" href="main.css"><!--
+      $Log: Architecture.html,v $
+      Revision 1.6  2003/05/12 18:47:23  clown
+      Updated link to Acclip on the IMS site (public draft 1).
+
+      Revision 1.5  2003/03/26 17:16:16  clown
+      Removed link to IMS ACCLIP since it does not exist, yet.
+
+      Revision 1.4  2003/03/24 05:31:03  clown
+      Incorporated Bruce's edits.
+
+      Revision 1.3  2003/03/13 22:28:59  clown
+      Modified IMG dimensions for Nancy's version.  Put in log directive.
+
+
+  --></head>
+
+<body>
+<div class="blockCentre">
+<h1>Web-4-All Architecture</h1>
+<p style="font-style: italic;">Joseph Scheuhammer<br>
+Adaptive Technology Resource Centre, University of Toronto<br>
+February 13, 2003 </p>
+</div>
+<h2>Introduction</h2>
+<p>The purpose of this document is to provide a brief overview of
+Web-4-All's architecture. </p>
+<p>The Web-4-All system is made up of a number of independent modules.
+They are "independent" in the sense that each performs its own function
+without regard to how the others are operating, except where they
+interface. This document describes the role of each module and how it
+interacts with the rest of the system. </p>
+<p> The architecture is diagrammed in Figure one.  The arrows indicate
+the flow of information. The nature of the information is described
+below in the section for each module.  A module drawn in dashed outline
+(e.g., Server) indicates that it is not implemented in the current
+Web-4-All system, but shows how the system could be expanded. </p>
+<hr>
+<div class="blockCentre"> <img src="arch.png" alt="Web-4-All modules" title="Web-4-All Architecture" style="width: 433px; height: 618px;">
+<p> Figure 1. Web-4-All Architecture<br>
+</p>
+</div>
+<hr>
+<p>The majority of the system is written in Java<span class="trademark">TM</span>
+in order to ensure maximum platform independence. The exceptions are at
+the front and back ends of the system.<br>
+</p>
+<p>At the front end, Web-4-All uses smart cards to store user
+preferences.&nbsp; Smart card technology is significantly dependent on
+factors such as the smart card chip, the chip's operating system, the
+card reader device, and OS-specific software for that card reader. As a
+result, Web-4-All is not platform independent with respect to its smart
+card interface.<br>
+</p>
+<p>At the back end, the preferences and configuration plug-ins are
+designed for specific third party software that runs on a particular
+operating system.&nbsp; Examples include IBM's Home Page Reader for
+Windows98, and the ATRC's onscreen keyboard for Windows. Since plug-ins
+configure these third party technologies, platform dependence cannot be
+avoided.<br>
+</p>
+<p>Nonetheless, Web-4-All was designed to minimize platform
+dependencies, especially within its core, and to push dependencies out
+to the fringe where Web-4-All interacts with the OS and its hardware.</p>
+<h2>Preference Loader Module</h2>
+<p>The preferences document is stored using XML.&nbsp; Web-4-All uses
+the "accessForAll" schema of the <a href="http://www.imsglobal.org/accessibility/index.cfm" title="Welcome to IMS Global Learning Consortium: Specification: Accessibility">IMS</a> Learner Information Package, or LIP. The accessForAll branch of the LIP is
+referred to herein as the "ACCLIP".</p>
+<p>The purpose of the Preferences Loader is to read and write the
+user's preferences document.&nbsp; The Preferences Loader has a generic
+API so as to not be bound to any particular storage medium.&nbsp;
+Examples of such media are smart cards, local file systems, and network
+servers.&nbsp; The current implementation of the Preferences Loader API
+is for smart cards.&nbsp; The current implementation of the Preferences
+Loader API is for smart cards, and uses the OpenCard framework (<a href="http://www.opencard.org" title="Welcome to OpenCard !">www.opencard.org</a>).</p>
+A word of caution:&nbsp; In actual fact, the smart card Preferences
+Loader does not store a full ACCLIP document on the smart card due to
+the limited memory available (it can be as little as 2k bytes).&nbsp;
+The smart card Preferences Loader contains a low memory-binding device
+that transforms a full ACCLIP into a reduced vocabulary version.&nbsp;
+That version is then compressed before being stored on the smart
+card.&nbsp; The reverse is also true. When the preferences document is
+read from the card, the smart card Preferences Loader decompresses and
+then expands the preferences to the full ACCLIP vocabulary.&nbsp; As
+such, a preferences document retrieved directly from the smart card is
+not an ACCLIP document.&nbsp; The document must first pass through the
+low memory-binding device (or something functionally equivalent), in
+order to retrieve the full ACCLIP elements and their attributes.&nbsp;
+Note this is done only because of the limited memory available on smart
+cards.&nbsp; The low memory binding software need not be used for a
+hard disk or file server implementation of the Preferences Loader.
+<h2>Control Hub<br>
+</h2>
+<p>The purpose of the Control Hub is to act as a coordinator and relay
+among the other modules of the system.&nbsp; In particular, it:<br>
+</p>
+<ul>
+  <li>acquires a preferences document from the Preferences Loader.</li>
+  <li>requests that the Preferences Loader store a preferences document.</li>
+  <li>requests that the Preferences Wizard Manager launch a wizard to
+create a new preferences document, or edit an existing one.<br>
+  </li>
+  <li>request that the Configuration Manager configure the workstation
+based on a preferences document.</li>
+</ul>
+<p>In Figure one, there is an octagon labelled "Plug-in Information"
+that feeds into the Control Hub.&nbsp; This is not a module of the
+system per se, but represents data that the Control Hub consults on
+behalf of the Preferences Wizard Manager and Configuration
+Manager.&nbsp; Specifically, this data contains information about the
+various plug-ins that the two managers invoke.<br>
+</p>
+<h2 class="h2bh">Preferences Wizard Manager</h2>
+<p>The Preferences Wizard Manager has two purposes.&nbsp; First, it has
+a built-in preferences wizard that enables users to create or edit
+preferences documents.&nbsp; In this regard it allows users to set
+"universal" or "common" preferences for different types of adaptive
+technology.&nbsp; For example, screen readers typically have a setting
+for volume, and the built-in wizard has a dialog for such a
+setting.&nbsp; In point of fact, the built-in wizard has preference
+dialogs for all of the ACCLIP's generic control and display preferences.<br>
+</p>
+<p>Secondly, the ACCLIP allows additional preferences to be set for
+specific third party applications.&nbsp; The Preferences Wizard Manager
+has a plug-in feature enabling third parties to create a link to their
+own preferences wizard so users can set preferences that are specific
+to that application.</p>
+<p>The responsibility of a Preferences Wizard Manager plug-in is
+twofold.&nbsp; It must launch the third party preferences wizard and
+return any settings back to the Preferences Wizard Manager. These
+specific third party preferences must be returned in the form specified
+by the ACCLIP.&nbsp; The Preferences Wizard Manager then incorporates
+them into the preferences document. </p>
+<h2>Configuration Manager Module</h2>
+<p>The purpose of the Configuration Manager is to configure the work
+station and third party technologies according to the preferences
+document, and to launch a Web browser. It does this by matching what the
+user has requested in terms of assistive technologies and what is
+actually present on the system as closely as possible.&nbsp; It
+determines the latter by querying the Control Hub for information about
+configuration plug-ins.&nbsp; When it finds the plug-in that best
+matches the user's preference settings, it passes the relevant portion
+of the ACCLIP to that plug-in, leaving it to perform the bulk of the
+work.</p>
+<p>The ACCLIP information passed to a configuration plugin includes
+generic preferences set by the built-in preferences wizard, and any
+specific preferences set by an external third party preferences
+wizard.&nbsp; Configuration plug-ins are expected to transform all
+relevant settings from the ACCLIP into a form that the third party
+technology understands, configure that technology, and launch it.&nbsp;
+When the user indicates that they are terminating the session (e.g., by
+removing their smart card), the plug-in resets and shuts down the third
+party software.&nbsp; The Configuration Manager calls upon the plug-in
+to perform its clean up based on some event that indicates that the
+user is finished.<br>
+</p>
+<h2>Summary</h2>
+<p>This describes the essential features of the Web-4-All system.&nbsp;
+The following documents provide additional details about the various
+components and how to implement preference wizard and configuration
+plug-ins.</p>
+<hr>
+<p> Copyright &copy; 2003 Adaptive Technology Resource Centre,
+University of Toronto.<br>
+All rights reserved.<br>
+Last modified: Mar 26, 2003. Joseph Scheuhammer. </p>
+</body></html>

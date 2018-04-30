@@ -1,0 +1,20 @@
+Instructions D'Installation 
+1.  Courez Setup.exe 
+2.  Lu et acceptez alors l'accord de permis d'exécution.  
+3.  Choisissez une destination pour application à installer.  L'espace disque libre de minimum exigé est le mb 12.  
+4.  Si vous n'avez pas la version minimum du logiciel de Java installé sur votre système vous serez présentés avec une boîte de message demandant si vous voulez que l'installation installe le logiciel de Java pour vous.  Appuyez sur le bouton d'cOui.  Si vous choisissez l'cAucun l'installation n'accomplira pas.  
+5.  Si vous n'avez pas la version minimum du logiciel de Java installé sur votre système et vous avez choisi OUI pour faire installer l'installation le logiciel de Java eh bien que le logiciel de Java sera installé en ce moment.  
+	- lisez l'accord de permis d'exécution d'environnement de Java.  
+	- choisissez "j'acceptent" l'option en cliquetant là-dessus et puis appuient sur le prochain bouton.  
+	- choisissez le prochain bouton sur la fenêtre "de type d'installation".  Typique est le type d'installation de défaut.  
+	- continuez de cliqueter après jusqu'à ce que le logiciel de Java finisse l'installation.  
+	- quand l'installation a accompli le déclic le bouton de finition.  
+	- l'installation revient à l'installation du magicien Demo de préférence de Web pour tous.  
+6.  L'installation commence à copier des dossiers vous votre ordinateur, attendent svp.  
+7.  Quand l'installation a accompli le déclic le bouton de finition.  
+
+Dépannage 
+1.  La version de logiciel de Java 1,3 ou plus haut est exigée pour le magicien de préférence de Web pour tous pour fonctionner.  L'environnement d'exécution de Java (JRE) est librement downloadable de www.java.com.  Si vous ne voulez pas que le Web pour tous installe pour installer le logiciel de Java, installez le logiciel de Java vous-même avant de commencer l'installation de demo de Web pour tous.  
+2.  Si vous obtenez une erreur pendant l'installation de Java vous  devez uninstall l'environnement d'exécution de Java et l'application de Demo de magicien de préférence de Web pour tous avant d'essayer de réinstaller.  
+3.  Volonté d'installation sur les logiciels d'exploitation suivants:  Windows 98, Windows ME, Windows 2000 et Windows XP.
+

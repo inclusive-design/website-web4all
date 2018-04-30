@@ -1,0 +1,1048 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html lang="en">
+<head>
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="Context-Type">
+
+
+  
+  <link type="text/css" href="../../../css/explorer.css" rel="StyleSheet">
+
+
+  
+  <link type="text/css" href="../../../css/toc.css" rel="StyleSheet">
+
+  
+
+
+  
+  <title>Web-4-All Build Instructions</title>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+
+
+  
+  <meta content="Adaptive Technology Resource Centre, University of Toronto" name="Author">
+
+
+  
+  <meta content="Government of Canada, Treasury Board Secretariat, Chief Information Officer Branch, Information Policy" name="Originator">
+
+
+  
+  <meta content="eng" name="Language_of_resource">
+
+
+  
+  <meta content="20060313" name="Date_Modified">
+
+
+  
+  <meta content="Web-4-All Installation Instructions" name="Title">
+
+
+  
+  <meta content="Web-4-All" name="Description">
+
+
+  
+  <meta content="Web-4-All" name="Keywords">
+</head>
+
+
+<body>
+
+
+<!-- Table of Contents -->
+<a name="Top"></a>
+<div class="toc"> <img style="width: 132px; height: 122px;" src="../../../images/GI_clr.gif" alt="Web-4-All">
+<h1>Web-4-All</h1>
+
+
+<div class="tocLinks">
+<p><a class="button" href="../w4a_home_e.html">Home</a></p>
+
+
+<p><a class="button" href="../../news/english/index.html">What's
+New</a></p>
+
+
+<p><a class="button" href="../../atrc/about_e.html">About
+Web-4-All <span class="enOnly"><br>
+
+
+(English only)</span></a></p>
+
+<p><a class="button" href="index.html">Public Release</a></p>
+
+
+<p><a class="button" href="../W4A_manual(03,31,06).pdf">Users' Manual <span class="enOnly"><br>(English only)</span></a></p>
+
+
+<p><a class="button" href="../../../PW_demo/Demo/ProgrammerManual/index.html">Programmers'
+Manual <span class="enOnly"><br>
+
+
+(English only)</span></a></p>
+
+
+<hr style="width: 95%;">
+<h2><a class="button" href="../home_e.html">Archive</a></h2>
+
+
+<ul style="list-style-type: none; list-style-image: none; list-style-position: outside; margin-left: 0.25em; padding-left: 0pt; text-align: left;">
+
+
+  <li style="margin-top: 0.5em; margin-left: 0.25em;"><a class="button" href="../pwd_e.html">Web-4-All Preferences Wizard Demo</a></li>
+  <li style="margin-top: 0.5em; margin-left: 0.25em;"><a class="button" href="../aboutcd_e.html">About the
+Pilot</a></li>
+
+
+  <li style="margin-top: 0.5em; margin-left: 0.25em;"><a class="button" href="../../atrc/atrc.html">The
+Technology <span class="enOnly"><br>
+
+
+(English only)</span></a></li>
+
+
+</ul>
+
+
+<hr style="width: 95%;">
+<p><a class="button" href="../contact_e.html">Contact
+Us</a></p>
+
+
+</div>
+
+
+</div>
+
+
+<!-- Main content -->
+<div class="mainContent"> <a name="snav" class="hide"></a><br>
+
+
+<h1>Web-4-All</h1>
+
+
+<h2>Build Instructions</h2>
+
+
+<hr>
+<h3>Table of Contents</h3>
+
+
+<ul>
+
+
+  <li><a href="#prerequisite">Prerequisites</a></li>
+
+
+  <li><a href="#Building">Building</a></li>
+
+
+  
+  <ul>
+
+
+    <li><a href="#Building_the_Core">Building the
+Core</a></li>
+
+
+    <li><a href="#Building_Plug-ins">Building the
+Plug-ins</a></li>
+
+
+    <li><a href="#Building_WinExecs">Building
+WinExecs</a></li>
+
+
+    
+    <ul>
+
+
+      <li><a href="#StartWeb4All">StartWeb4All</a></li>
+
+
+      <li><a href="#FontColourSetup">FontColourSetup</a></li>
+
+
+      <li><a href="#KeyboardSetup">KeyboardSetup</a></li>
+
+
+      <li><a href="#MouseKeysSetup">MouseKeysSetup</a></li>
+
+
+      <li><a href="#RegistryConsole">RegistryConsole</a></li>
+
+
+      <li><a href="#MOSK_Controller">MOSK_Controller</a></li>
+
+
+      <li><a href="#W4AWinSpeak">W4AWinSpeak</a></li>
+
+
+    
+    </ul>
+
+
+  
+  </ul>
+
+
+  <li><a href="#Location_of_Binaries">Location of
+Binaries</a></li>
+
+
+</ul>
+
+
+<h2><a name="prerequisite">Prerequisites</a></h2>
+
+
+<p>Most of the Web-4-All source code is Java. &nbsp;The list
+below describes the third-party components and Java tools
+you'll
+need to build Web-4-All. These are recommendations based on our
+setup at the Adaptive Technology Resource Centre (ATRC); since
+Web-4-All is built on open source, standards-based tools, there are
+numerous other possibilities and setups.</p>
+
+
+<ol>
+
+
+  <li><a title="Java 2 Platform, Standard Edition (Java SE)" href="http://java.sun.com/j2se/">J2SE 1.4.2</a> or
+later.</li>
+
+
+  
+  <ul>
+
+
+    <li>Note: &nbsp;Java 1.5 is needed for running the French
+version on Windows due to a locale bug in javaw.exe (<a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4891531">bug
+#4891531</a>).&nbsp;</li>
+
+
+  
+  </ul>
+
+
+  <li><a title="Apache Ant - Welcome" href="http://ant.apache.org">Apache Ant 1.6</a> or
+later (Java make-like tool)</li>
+
+
+  <li><a title="The Apache Xalan Project" href="http://xalan.apache.org/">Apache XML libraries</a>
+-- Xalan 2.4.1.<br>
+
+
+Note that the following jars are shipped with the Web-4-All source code
+download.</li>
+
+
+  
+  <ul>
+
+
+    <li>xalan.jar</li>
+
+
+    <li>xercesImpl.jar</li>
+
+
+    <li>xml-apis.jar</li>
+
+
+    <li>xmlParserAPIs.jar</li>
+
+
+    <li>regexp.jar</li>
+
+
+  
+  </ul>
+
+
+  <li><a title="SysTray for Java" href="http://systray.sourceforge.net/">SysTray4Java 2.4.1</a>
+&nbsp;Note that the jar is shipped with the Web-4-All source code
+distribution. &nbsp;The runtime Windows dll is not.</li>
+
+
+  
+  <ul>
+
+
+    <li>systray4j.jar</li>
+
+
+  
+  </ul>
+
+
+  <li><a title="Welcome to OpenCard!" href="http://www.opencard.org/">Open Card Framework (OCF 1.2)</a>
+for&nbsp;</li>
+
+
+  
+  <ul>
+
+
+    <li>base-core.jar</li>
+
+
+    <li>base-opt.jar</li>
+
+
+    <li>reference-services.jar</li>
+
+
+    <li>reference-terminals-windows.jar</li>
+
+
+  
+  </ul>
+
+
+</ol>
+
+
+<h2><a name="Building"></a>Building</h2>
+
+
+<p>The files in the source code download are organized according
+to the
+directory structure used at the ATRC to build the core.
+&nbsp;Roughly
+this is as follows:</p>
+
+
+<ul>
+
+
+  <li>src</li>
+
+
+  
+  <ul>
+
+
+    <li>java</li>
+
+
+    
+    <ul>
+
+
+      <li>build.xml - ant build script for the core.</li>
+
+
+    
+    </ul>
+
+
+    
+    <ul>
+
+
+      <li>lib - contains all the third party jars.</li>
+
+
+    
+    </ul>
+
+
+    
+    <ul>
+
+
+      <li>ca - root of ca.utoronto.atrc.web4all</li>
+
+
+      <li>3rd_party - root for the java plug-in source code.</li>
+
+
+      
+      <ul>
+
+
+        <li>build.xml - ant build script for the plug-ins.</li>
+
+
+        <li>ca - root of ca.utoronto.atrc.weball.thirdparty</li>
+
+
+      
+      </ul>
+
+
+    
+    </ul>
+
+
+    <li>C</li>
+
+
+    
+    <ul>
+
+
+      <li>Winexecs</li>
+
+
+      
+      <ul>
+
+
+        <li>StartWeb4All</li>
+
+
+      
+      </ul>
+
+
+      
+      <ul>
+
+
+        <li>FontColourSetup</li>
+
+
+        <li>KeyboardSetup</li>
+
+
+        <li>MouseKeysSetup</li>
+
+
+        <li>RegistryConsole</li>
+
+
+        <li>MOSK_Controller</li>
+
+
+        <li>W4AWinSpeak</li>
+
+
+      
+      </ul>
+
+
+    
+    </ul>
+
+
+  
+  </ul>
+
+
+</ul>
+
+
+<h3><a name="Building_the_Core"></a>Building
+the Java Core</h3>
+
+
+<p>There is an ant build script that can be used to build the
+core of
+Web-4-All. &nbsp;It is named "build.xml", and is found in the
+".../src/java" directory.</p>
+
+
+<p>There are a number of targets in this ant script that are
+briefly described immediately following. The default target is "run".</p>
+
+
+<ul>
+
+
+  <li>run</li>
+
+
+  
+  <ul>
+
+
+    <li>compiles all the java source.</li>
+
+
+    <li>creates the jar "AtrcWeb4All.jar" in the "dist"
+subdirectory.</li>
+
+
+    <li>launches Web-4-All</li>
+
+
+    
+    <ul>
+
+
+      <li>Note: &nbsp;no plug-ins are installed in this run.</li>
+
+
+    
+    </ul>
+
+
+  
+  </ul>
+
+
+  <li>compile</li>
+
+
+  
+  <ul>
+
+
+    <li>compiles all the java source code.</li>
+
+
+    <li>the compiled code is placed in the "build" subdirectory.</li>
+
+
+  
+  </ul>
+
+
+  <li>dist</li>
+
+
+  
+  <ul>
+
+
+    <li>compiles all the java source code.</li>
+
+
+    <li>creates the jar "AtrcWeb4All.jar" in the "dist"
+subdirectory.</li>
+
+
+  
+  </ul>
+
+
+  <li>clean</li>
+
+
+  
+  <ul>
+
+
+    <li>deletes the "dist" subdirectory.</li>
+
+
+    <li>deletes the "build" subdirectory (deletes all compiled
+java classes).</li>
+
+
+  
+  </ul>
+
+
+  <li>prepare</li>
+
+
+  
+  <ul>
+
+
+    <li>deletes the "dist" subdirectory.</li>
+
+
+    <li>deletes the "build" subdirectory.</li>
+
+
+    <li>creates empty "dist" and "build" subdirectories.</li>
+
+
+  
+  </ul>
+
+
+  <li>runPlugins</li>
+
+
+  
+  <ul>
+
+
+    <li>compiles all the java source.</li>
+
+
+    <li>creates the jar "AtrcWeb4All.jar" in the "dist"
+subdirectory.</li>
+
+
+    <li>launches Web-4-All.</li>
+
+
+    <li>installs any plug-ins in the "3rd_party" subdirectory</li>
+
+
+  
+  </ul>
+
+
+</ul>
+
+
+<h3><a name="Building_Plug-ins"></a>Building&nbsp;Plug-ins</h3>
+
+
+<p>An ant build script is provided to build the plug-ins that the
+ATRC wrote for the binary distribution, as well as some protoype
+plug-ins recently implemented. &nbsp;The script is
+named&nbsp;"build.xml", and is found in the
+".../src/java/3rd_party" directory.</p>
+<p>NOTE: &nbsp;One cannot compile the plug-ins without access to the
+some of the class definitions in the core code. &nbsp;This plug-ins
+build script is set to access the AtrcWeb4All.jar that is output when <a href="#Building_the_Core">building the core</a>. &nbsp;Compiling will fail if this jar has not been built.</p>
+
+
+<p>The targets defined in the plug-ins build script are briefly described
+below. The default target is "dist".</p>
+
+
+<ul>
+
+
+  <li>dist</li>
+
+
+  
+  <ul>
+
+
+    <li>compiles the java source code for the distributed plug-ins.</li>
+
+
+  
+  </ul>
+
+
+  
+  <ul>
+
+
+    <li>creates the jars named HPR3.jar, EReader.jar,
+Kensington.jar, Opera.jar, Vdk.jar, WinKeys.jar, and MouseKeys.jar,
+placing them into the&nbsp; "dist" subdirectory.</li>
+
+
+  
+  </ul>
+
+
+  <li>compile</li>
+
+
+  
+  <ul>
+
+
+    <li>compiles all the java source code.</li>
+
+
+    <li>the compiled code is placed in the "build" subdirectory.</li>
+
+
+  
+  </ul>
+
+
+  <li>prepare</li>
+
+
+  
+  <ul>
+
+
+    <li>creates the "build" and "dist" subdirectories.</li>
+
+
+  
+  </ul>
+
+
+  <li>clean</li>
+
+
+  
+  <ul>
+
+
+    <li>deletes the "dist" subdirectory.</li>
+
+
+  
+  </ul>
+
+
+  
+  <ul>
+
+
+    <li>deletes the "build" subdirectory (deletes all compiled
+java classes).</li>
+
+
+  
+  </ul>
+
+
+  <li>clean.all</li>
+
+
+  
+  <ul>
+
+
+    <li>deletes all the jars.</li>
+
+
+  
+  </ul>
+
+
+  <li>runPlugins</li>
+
+
+  
+  <ul>
+
+
+    <li>creates a distribution of the jars.</li>
+
+
+    <li>runs Web-4-All installation all of the plug-ins.</li>
+
+
+    <li>Note: &nbsp;assumes that Web-4-All core code is
+already built. This will fail is that is not the case.</li>
+
+
+  
+  </ul>
+  <li>prototypes</li>
+  <ul>
+    <li>compiles the java code for the experimental prototype plug-ins.</li>
+    <li>creates jars named Dragon.jar, JAWS.jar, MOSK.jar, and ZoomText.jar.</li>
+  </ul>
+
+
+</ul>
+
+
+<h3><a name="Building_WinExecs"></a>Building
+WinExecs</h3>
+
+
+<p>Inside the "../src/C/" directory are a number of Windows based
+command line utilities and a dll. The following section describes how
+to build these parts of Web-4-All.</p>
+
+
+<h4><a name="StartWeb4All"></a>StartWeb4All</h4>
+
+
+<p>The source to the executable that launches Web-4-All,
+Web-4-All.exe, is located in the ".../src/C/WinExecs/StartWeb4All"
+directory of the source tree. The file is called "start_web4all.c". It
+is written in the C programming language and uses the MinGW --
+Minimalist GNU for Windows -- library. In order to compile
+Web-4-All.exe complete the following steps on your Windows system:<br>
+
+
+</p>
+
+
+<ol>
+
+
+  <li>Download and install MinGW (<a class="moz-txt-link-freetext" href="http://www.mingw.org/">http://www.mingw.org</a>).
+  </li>
+
+
+  <li>Add MinGW's "bin" directory to the system's command path. </li>
+
+
+  <li>Run the "makeWeb4AllExec.bat" BAT file located in the
+".../src/C/WinExecs/StartWeb4All" directory.</li>
+
+
+</ol>
+
+
+<h4><a name="FontColourSetup"></a>FontColourSetup</h4>
+
+
+<p>FontColourSetup was created using Microsoft Visual C++. The
+FontColourSetup folder includes the workspace and project files:
+"FontColourSetup.dsw" and "FontColourSetup.dsp" respectively.</p>
+
+
+<p>To build the utility, open the workspace file
+("FontColourSetup.dsw") in Visual C++ and choose 'build' from the Build
+menu.</p>
+
+
+<h4><a name="KeyboardSetup"></a>KeyboardSetup</h4>
+
+
+<p>KeyboardSetup was created using Microsoft Visual C++. The
+KeyboardSetup folder includes the workspace and project files:
+"KeyboardSetup.dsw" and "KeyboardSetup.dsp" respectively.</p>
+
+
+<p>To build the utility, open the workspace file
+("KeyboardSetup.dsw") in Visual C++ and choose 'build' from the Build
+menu.</p>
+
+
+<h4><a name="MouseKeysSetup"></a>MouseKeysSetup</h4>
+
+
+<p>MouseKeysSetup was created using Microsoft Visual C++. The
+MouseKeysSetup folder includes the workspace and project files:
+"MouseKeysSetup.dsw" and "MouseKeysSetup.dsp" respectively.</p>
+
+
+<p>To build the utility, open the workspace file
+("MouseKeysSetup.dsw") in Visual C++ and choose 'build' from the Build
+menu.</p>
+
+
+<h4><a name="RegistryConsole"></a>RegistryConsole</h4>
+
+
+<p>The RegistryConsole was created using Microsoft Visual C++.
+The
+RegistryConsole folder includes the workspace and project files:
+"RegistryConsole.dsw" and "RegistryConsole.dsp" respectively.</p>
+
+
+<p>To build the utility, open the workspace file
+("RegistryConsole.dsw") in Visual C++ and choose 'build' from the Build
+menu.</p>
+
+
+<h4><a name="MOSK_Controller"></a>MOSK_Controller</h4>
+
+
+<p>The MOSK_Controller was created using Microsoft Visual C++.
+The
+MOSK_Controller folder includes the workspace and project files:
+"MOSK_Controller.dsw" and "MOSK_Controller.dsp" respectively.</p>
+
+
+<p>To build the utility, open the workspace file
+("MOSK_Controller.dsw") in Visual C++ and choose 'build' from the Build
+menu.</p>
+
+
+<h4><a name="W4AWinSpeak"></a>W4AWinSpeak</h4>
+
+
+<p>This is a Windows native speech DLL that connects parts of
+Web-4-All to the voice sysnthesizer. This project was created using
+Microsoft Visual C++ v6.0.</p>
+
+
+<ol>
+
+
+  <li>Locate the file "W4AWinSpeak.dsp" and launch it</li>
+
+
+  <li>Press F7 (or select menu "Tools" and "Build
+NativeSpeech.dll").</li>
+
+
+  <li>Confirm NativeSpeech.dll exists in a relative directory
+"../../../java/NativeSpeech.dll".</li>
+
+
+</ol>
+
+
+<p>Notes:</p>
+
+
+<ul>
+
+
+  <li>you may need to change project settings to match your build
+platform.</li>
+
+
+  <li>Step 1 requires a compatible IDE (e.g. MS Visual C++ v6.0).</li>
+
+
+</ul>
+
+
+<h2><a name="Location_of_Binaries"></a>Location
+of Binaries</h2>
+
+
+<p>The above instructions describe how to build the various parts
+of Web-4-All, but the various build systems do not place their results
+in the locations they need to be to run Web-4-All. &nbsp;The
+following describes the location of each part of the application, with
+links back to the build instructions for that part.</p>
+
+
+<p>The ATRC deploys Web-4-All in a directory structure whose root
+is "Atrc":</p>
+
+
+<ul>
+
+
+  <li>Atrc</li>
+
+
+  
+  <ul>
+
+
+    <li><a href="buildInstructions.html#StartWeb4All">Web4All.exe</a></li>
+
+
+  
+  </ul>
+
+
+  
+  <ul>
+
+
+    <li><a href="#W4AWinSpeak">NativeSpeech.dll</a></li>
+
+
+    <li>lib</li>
+
+
+    
+    <ul>
+
+
+      <li><a href="#Building_the_Core">AtrcWeb4All.jar</a></li>
+
+
+    
+    </ul>
+
+
+    <li>3rd_party</li>
+
+
+    
+    <ul>
+
+
+      <li><a href="#Building_Plug-ins">HPR3.jar</a></li>
+
+
+      <li><a href="buildInstructions.html#Building_Plug-ins">EReader.jar</a></li>
+
+
+      <li><a href="buildInstructions.html#Building_Plug-ins">Kensington.jar</a></li>
+
+
+      <li><a href="buildInstructions.html#Building_Plug-ins">Opera.jar</a></li>
+
+
+      <li><a href="buildInstructions.html#Building_Plug-ins">Vdk.jar,</a></li>
+
+
+      <li><a href="buildInstructions.html#Building_Plug-ins">WinKeys.jar</a></li>
+
+
+      <li><a href="buildInstructions.html#Building_Plug-ins">MouseKeys.jar</a></li>
+
+
+      <li>FontSetup</li>
+
+
+      
+      <ul>
+
+
+        <li><a href="#FontColourSetup">FontColourSetup.exe</a></li>
+
+
+      
+      </ul>
+
+
+      <li>MouseKeys</li>
+
+
+      
+      <ul>
+
+
+        <li><a href="buildInstructions.html#MouseKeysSetup">MouseKeysSetup.exe</a></li>
+
+
+      
+      </ul>
+
+
+      <li>RegistryConsole</li>
+
+
+      
+      <ul>
+
+
+        <li><a href="buildInstructions.html#RegistryConsole">RegistryConsole.exe</a></li>
+
+
+      
+      </ul>
+
+
+      <li>WinKeys</li>
+
+
+      
+      <ul>
+
+
+        <li><a href="buildInstructions.html#KeyboardSetup">KeyboardSetup.exe</a></li>
+
+
+      
+      </ul>
+
+
+    
+    </ul>
+
+
+  
+  </ul>
+
+
+</ul>
+
+
+<br>
+
+
+<hr><!-- InstanceEndEditable --><!-- FOOTER -->
+<p style="padding-bottom: 1em;"> <span style="float: left;"> <a href="#Top" class="nav">Top
+of Page </a> </span> <span style="float: right;">
+<a href="http://www.utoronto.ca/atrc/" target="_blank" class="nav">ATRC Web Site</a> </span> </p>
+
+
+</div>
+
+
+</body>
+</html>

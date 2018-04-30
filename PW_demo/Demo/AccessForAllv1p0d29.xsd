@@ -1,0 +1,2047 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.imsglobal.org/xsd/acclip"
+    xmlns:imsacclip="http://www.imsglobal.org/xsd/acclip"
+    xmlns:imslip="http://www.imsproject.org/xsd/ims_lip_rootv1p0"
+    version="1.0.29"
+    blockDefault="#all">
+    
+    <import namespace="http://www.w3.org/XML/1998/namespace" 
+        schemaLocation="xml.xsd"/>
+
+    <import namespace="http://www.imsproject.org/xsd/ims_lip_rootv1p0" 
+        schemaLocation="LIPContentype.xsd"/>
+    
+    <annotation>
+        <documentation> 
+            @author David Weinkauf
+            @author Brendon Towle
+            @author Mark Norton
+            @version Revision 1.0.29 Date 2003/07/23
+        </documentation>
+    </annotation>
+    
+    <!-- 
+    Copyright &copy; 2002, ATRC, University of Toronto.  All rights reserved.
+    -->
+    
+    <!-- ********************************* -->		
+    <!-- ** ATTRIBUTEGROUP DECLARATIONS ** -->		
+    <!-- ********************************* -->
+
+    <attributeGroup name="attrApplication">
+        <attribute name="name" use="required" type="string"/>
+        <attribute name="version" type="string"/>
+        <attribute name="priority" use="required" type="positiveInteger"/>
+    </attributeGroup>
+    <attributeGroup name="attrAudioDescription">
+        <attribute ref="xml:lang" default="en"/>
+        <attribute name="type" default="standard" 
+            type="imsacclip:audioDescriptionType"/>
+    </attributeGroup>
+    <attributeGroup name="attrParam">
+        <attribute name="name" use="required" type="string"/>
+        <attribute name="value" type="string"/>
+    </attributeGroup>
+        
+    <!-- ************************** -->
+    <!-- ** ELEMENT DECLARATIONS ** -->
+    <!-- ************************** -->
+    
+    <element name="absolutePointing" 
+        type="imsacclip:absolutePointingElementType"/>
+    <element name="acceleration" type="imsacclip:accelerationElementType"/>
+    <element name="accessForAll" type="imsacclip:accessForAllElementType"/>
+    <element name="alphaLayoutInternal" 
+        type="imsacclip:alphaLayoutInternalElementType"/>
+    <element name="alphaLayoutExternal" 
+        type="imsacclip:alphaLayoutExternalElementType"/>
+    <element name="altTextLang" type="imsacclip:altTextLangElementType"/>
+    <element name="alternativeKeyboard" 
+        type="imsacclip:alternativeKeyboardElementType"/>
+    <element name="alternativeKeyboardGeneric" 
+        type="imsacclip:alternativeKeyboardGenericElementType"/>
+    <element name="alternativePointing" 
+        type="imsacclip:alternativePointingElementType"/>
+    <element name="alternativePointingGeneric" 
+        type="imsacclip:alternativePointingGenericElementType"/>
+    <element name="alternativesToAuditory" 
+        type="imsacclip:alternativesToAuditoryElementType"/>
+    <element name="alternativesToText" 
+        type="imsacclip:alternativesToTextElementType"/>
+    <element name="alternativesToVisual" 
+        type="imsacclip:alternativesToVisualElementType"/>
+    <element name="application" type="imsacclip:applicationElementType"/>
+    <element name="audioDescription" 
+        type="imsacclip:audioDescriptionElementType"/>
+    <element name="autoRepeatDelay" 
+        type="imsacclip:autoRepeatDelayElementType"/>
+    <element name="autoRepeatRate" type="imsacclip:autoRepeatRateElementType"/>
+    <element name="autoScanInitDelay" 
+        type="imsacclip:autoScanInitDelayElementType"/>
+    <element name="autoScanning" type="imsacclip:autoScanningElementType"/>
+    <element name="autoScanRepeat" type="imsacclip:autoScanRepeatElementType"/>
+    <element name="avoidBlueYellow" type="imsacclip:avoidColorElementType"/>
+    <element name="avoidGreenYellow" type="imsacclip:avoidColorElementType"/>
+    <element name="avoidOrange" type="imsacclip:avoidColorElementType"/>
+    <element name="avoidPurpleGray" type="imsacclip:avoidColorElementType"/>
+    <element name="avoidRed" type="imsacclip:avoidColorElementType"/>
+    <element name="avoidRedBlack" type="imsacclip:avoidColorElementType"/>
+    <element name="avoidRedGreen" type="imsacclip:avoidColorElementType"/>
+    <element name="backgroundColor" 
+        type="imsacclip:backgroundColorElementType"/>
+    <element name="braille" type="imsacclip:brailleElementType"/>
+    <element name="brailleGeneric" type="imsacclip:brailleGenericElementType"/>
+    <element name="buttonAssignmentExternal" 
+        type="imsacclip:buttonAssignmentExternalElementType"/>
+    <element name="captionType" type="imsacclip:captionTypeElementType"/>
+    <element name="captionRate" type="imsacclip:captionRateElementType"/>
+    <element name="captions" type="imsacclip:captionsElementType"/>
+    <element name="caret" type="imsacclip:caretElementType"/>
+    <element name="commandControl" type="imsacclip:commandControlElementType"/>
+    <element name="commandPrediction" 
+        type="imsacclip:commandPredictionElementType"/>
+    <element name="code" type="imsacclip:codeElementType"/>
+    <element name="codeExternal" type="imsacclip:codeExternalElementType"/>
+    <element name="codeRate" type="imsacclip:codeRateElementType"/>
+    <element name="codeSwitchNumber" 
+        type="imsacclip:codeSwitchNumberElementType"/>
+    <element name="codeSelect" type="imsacclip:codeSelectElementType"/>
+    <element name="codeSelection" type="imsacclip:codeSelectionElementType"/>
+    <element name="codeTermination" 
+        type="imsacclip:codeTerminationElementType"/>
+    <element name="codedInput" type="imsacclip:codedInputElementType"/>
+    <element name="colorAvoidance" type="imsacclip:colorAvoidanceElementType"/>
+    <element name="content" type="imsacclip:contentElementType"/>
+    <element name="context" type="imsacclip:contextElementType"/>
+    <element name="contentDensity" type="imsacclip:contentDensityElementType"/>
+    <element name="contentViews" type="imsacclip:contentViewsElementType"/>
+    <element name="control" type="imsacclip:controlElementType"/>
+    <element name="controlsWindow" type="imsacclip:controlsWindowElementType"/>
+    <element name="cursorColor" type="imsacclip:cursorColorElementType"/>
+    <element name="cursorSize" type="imsacclip:cursorSizeElementType"/>
+    <element name="cursorTrails" type="imsacclip:cursorTrailsElementType"/>
+    <element name="debounce" type="imsacclip:debounceElementType"/>
+    <element name="debounceInterval" 
+        type="imsacclip:debounceIntervalElementType"/>
+    <element name="device" type="imsacclip:deviceElementType"/>
+    <element name="dictation" type="imsacclip:dictationElementType"/>
+    <element name="directedScanning" 
+        type="imsacclip:directedScanningElementType"/>
+    <element name="display" type="imsacclip:displayElementType"/>
+    <element name="dotPressure" type="imsacclip:dotPressureElementType"/>
+    <element name="doubleClickSpeed" 
+        type="imsacclip:doubleClickSpeedElementType"/>
+    <element name="dwellTime" type="imsacclip:dwellTimeElementType"/>
+    <element name="extraTime" type="imsacclip:extraTimeElementType"/>
+    <element name="feedback" type="imsacclip:feedbackElementType"/>
+    <element name="focus" type="imsacclip:focusElementType"/>
+    <element name="fontFace" type="imsacclip:fontFaceElementType"/>
+    <element name="fontName" type="imsacclip:fontNameElementType"/>
+    <element name="fontSize" type="imsacclip:fontSizeElementType"/>
+    <element name="foregroundColor" 
+        type="imsacclip:foregroundColorElementType"/>
+    <element name="futureTechnology" 
+        type="imsacclip:futureTechnologyElementType"/>
+    <element name="enhancedCaption" type="imsacclip:enhancedCaptionElementType"/>
+    <element name="genericFace" type="imsacclip:genericFaceElementType"/>
+    <element name="grade" type="imsacclip:gradeElementType"/>
+    <element name="graphicAlternative" 
+        type="imsacclip:graphicAlternativeElementType"/>
+    <element name="handedness" type="imsacclip:handednessElementType"/>
+    <element name="highlight" type="imsacclip:highlightElementType"/>
+    <element name="highlightColor" type="imsacclip:highlightColorElementType"/>
+    <element name="inverseScanning" 
+        type="imsacclip:inverseScanningElementType"/>
+    <element name="invertedColorChoice" 
+        type="imsacclip:invertedColorChoiceElementType"/>
+    <element name="keyboardEnhanced" 
+        type="imsacclip:keyboardEnhancedElementType"/>
+    <element name="keyboardEnhancedGeneric" 
+        type="imsacclip:keyboardEnhancedGenericElementType"/>
+    <element name="learnerScaffold" 
+        type="imsacclip:learnerScaffoldElementType"/>
+    <element name="link" type="imsacclip:linkElementType"/>
+    <element name="longDescriptionLang" 
+        type="imsacclip:longDescriptionLangElementType"/>
+    <element name="magnification" type="imsacclip:magnificationElementType"/>
+    <element name="markBold" type="imsacclip:markBoldElementType"/>
+    <element name="markColor" type="imsacclip:markColorElementType"/>
+    <element name="markHighlight" type="imsacclip:markHighlightElementType"/>
+    <element name="markItalic" type="imsacclip:markItalicElementType"/>
+    <element name="markStrikeout" type="imsacclip:markStrikeoutElementType"/>
+    <element name="markUnderline" type="imsacclip:markUnderlineElementType"/>
+    <element name="microphoneGain" type="imsacclip:microphoneGainElementType"/>
+    <element name="mouse" type="imsacclip:mouseElementType"/>
+    <element name="mouseEmulation" type="imsacclip:mouseEmulationElementType"/>
+    <element name="mouseEmulationGeneric" 
+        type="imsacclip:mouseEmulationGenericElementType"/>
+    <element name="navigationDepth" 
+        type="imsacclip:navigationDepthElementType"/>
+    <element name="numberChoicesDisplayed" 
+        type="imsacclip:numberChoicesDisplayedElementType"/>
+    <element name="numCells" type="imsacclip:numCellsElementType"/>
+    <element name="numDots" type="imsacclip:numDotsElementType"/>
+    <element name="onscreenKeyboard" 
+        type="imsacclip:onscreenKeyboardElementType"/>
+    <element name="onscreenKeyboardGeneric" 
+        type="imsacclip:onscreenKeyboardGenericElementType"/>
+    <element name="param" type="imsacclip:paramElementType"/>
+    <element name="personalLexicon" 
+        type="imsacclip:personalLexiconElementType"/>
+    <element name="personalStylesheet" 
+        type="imsacclip:personalStylesheetElementType"/>
+    <element name="pitch" type="imsacclip:pitchElementType"/>
+    <element name="playSound" type="imsacclip:playSoundElementType"/>
+    <element name="pointAndClick" type="imsacclip:pointAndClickElementType"/>
+    <element name="pointAndDwell" type="imsacclip:pointAndDwellElementType"/>
+    <element name="prediction" type="imsacclip:predictionElementType"/>
+    <element name="readingUnit" type="imsacclip:readingUnitElementType"/>
+    <element name="reducedReadingLevel" 
+        type="imsacclip:reducedReadingLevelElementType"/>
+    <element name="reducedSpeed" type="imsacclip:reducedSpeedElementType"/>
+    <element name="relativePointing" 
+        type="imsacclip:relativePointingElementType"/>
+    <element name="repeatKeys" type="imsacclip:repeatKeysElementType"/>
+    <element name="resizableKeys" type="imsacclip:resizableKeysElementType"/>
+    <element name="scanSpeed" type="imsacclip:scanSpeedElementType"/>
+    <element name="scanSwitchDelay" 
+        type="imsacclip:scanSwitchDelayElementType"/>
+    <element name="screenEnhance" type="imsacclip:screenEnhanceElementType"/>
+    <element name="screenEnhanceGeneric" 
+        type="imsacclip:screenEnhanceGenericElementType"/>
+    <element name="screenReader" type="imsacclip:screenReaderElementType"/>
+    <element name="screenReaderGeneric" 
+        type="imsacclip:screenReaderGenericElementType"/>
+    <element name="showLinks" type="imsacclip:showLinksElementType"/>
+    <element name="showNotes" type="imsacclip:showNotesElementType"/>
+    <element name="showTranscript" type="imsacclip:showTranscriptElementType"/>
+    <element name="signLanguage" type="imsacclip:signLanguageElementType"/>
+    <element name="slowKeys" type="imsacclip:slowKeysElementType"/>
+    <element name="slowKeysInterval" 
+        type="imsacclip:slowKeysIntervalElementType"/>
+    <element name="sound" type="imsacclip:soundElementType"/>
+    <element name="speakAltText" type="imsacclip:speakAltTextElementType"/>
+    <element name="speakWhenTabbing" 
+        type="imsacclip:speakWhenTabbingElementType"/>
+    <element name="speechRate" type="imsacclip:speechRateElementType"/>
+    <element name="speed" type="imsacclip:speedElementType"/>
+    <element name="statusCell" type="imsacclip:statusCellElementType"/>
+    <element name="stickyKeys" type="imsacclip:stickyKeysElementType"/>
+    <element name="structuralNavigation" 
+        type="imsacclip:structuralNavigationElementType"/>
+    <element name="structuralPresentation" 
+        type="imsacclip:structuralPresentationElementType"/>
+    <element name="switchDelay" type="imsacclip:switchDelayElementType"/>
+    <element name="switchType" type="imsacclip:switchTypeElementType"/>
+    <element name="systemSounds" type="imsacclip:systemSoundsElementType"/>
+    <element name="tactile" type="imsacclip:tactileElementType"/>
+    <element name="tactileGeneric" type="imsacclip:tactileGenericElementType"/>
+    <element name="textReadingHighlight" 
+        type="imsacclip:textReadingHighlightElementType"/>
+    <element name="textReadingHighlightGeneric" 
+        type="imsacclip:textReadingHighlightGenericElementType"/>
+    <element name="tracking" type="imsacclip:trackingElementType"/>
+    <element name="useMaximumContrastMonochrome" 
+        type="imsacclip:useMaximumContrastMonochromeElementType"/>
+    <element name="useTableOfContents" 
+        type="imsacclip:useTableOfContentsElementType"/>
+    <element name="verbatim" type="imsacclip:verbatimElementType"/>
+    <element name="verbatimCaptionLang" 
+        type="imsacclip:verbatimCaptionLangElementType"/>
+    <element name="visualAlert" type="imsacclip:visualAlertElementType"/>
+    <element name="visualAlertGeneric" 
+        type="imsacclip:visualAlertGenericElementType"/>
+    <element name="vocabulary" type="imsacclip:vocabularyElementType"/>
+    <element name="voiceProfileExternal" 
+        type="imsacclip:voiceProfileExternalElementType"/>
+    <element name="voiceRecognition" 
+        type="imsacclip:voiceRecognitionElementType"/>
+    <element name="voiceRecognitionGeneric" 
+        type="imsacclip:voiceRecognitionGenericElementType"/>
+    <element name="volume" type="imsacclip:volumeElementType"/>
+    <element name="windowLayout" type="imsacclip:windowLayoutElementType"/>
+    <element name="wordPrediction" type="imsacclip:wordPredictionElementType"/>
+    <element name="wordCompletionPrediction" 
+        type="imsacclip:wordCompletionPredictionElementType"/>
+    
+    <!-- *************************************** -->		
+    <!-- ** ACCOMODATION ELEMENT DECLARATIONS ** -->		
+    <!-- *************************************** -->
+    
+    <element name="accomodation" type="imsacclip:accomodationElementType"/>
+    <element name="accomodationDescription" type="string"/>
+    <element name="accomodationPackage" 
+        type="imsacclip:accomodationPackageElementType"/>
+    <element name="authorizedBy" type="string"/>
+    <element name="description" type="string"/>
+    <element name="learningObjectDescription" type="string"/>
+    <element name="requestForAccomodations" type="string"/>
+    
+    
+    <!-- ******************* -->		
+    <!-- ** COMPLEX TYPES ** -->		
+    <!-- ******************* -->
+    
+    <complexType name="accessForAllElementType">
+        <sequence>
+            <element ref="imsacclip:context" maxOccurs="unbounded"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+        <attribute name="schemaVersion" type="imsacclip:schemaVersionType"/>
+        <anyAttribute namespace="##other" processContents="strict"/>
+    </complexType>
+    <complexType name="accomodationElementType">
+        <sequence>
+            <element ref="imsacclip:accomodationPackage" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="accomodationPackageElementType">
+        <sequence>
+            <element ref="imsacclip:learningObjectDescription"/>
+            <element ref="imsacclip:requestForAccomodations" minOccurs="0"/>
+            <element ref="imsacclip:accomodationDescription"/>
+            <element ref="imsacclip:authorizedBy"/>
+        </sequence>
+        <attribute name="authorizedDate" use="required" type="dateTime"/>
+        <attribute name="expirationDate" use="required" type="dateTime"/>
+    </complexType>	
+    <complexType name="alternativesToAuditoryElementType">
+        <sequence>
+            <element ref="imsacclip:captionType" minOccurs="0" 
+                maxOccurs="unbounded"/>
+            <element ref="imsacclip:signLanguage" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="alternativesToTextElementType">
+        <sequence>
+            <element ref="imsacclip:graphicAlternative" minOccurs="0"/>
+            <element ref="imsacclip:signLanguage" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="alternativesToVisualElementType">
+        <sequence>
+            <element ref="imsacclip:audioDescription" minOccurs="0"/>
+            <element ref="imsacclip:altTextLang" minOccurs="0"/>
+            <element ref="imsacclip:longDescriptionLang" minOccurs="0"/>
+            <element ref="imsacclip:colorAvoidance" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="alternativePointingElementType">
+        <sequence>
+            <element ref="imsacclip:alternativePointingGeneric"/>
+            <element ref="imsacclip:application" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="alternativePointingGenericElementType">
+        <sequence>
+            <choice>
+                <element ref="imsacclip:relativePointing"/>
+                <element ref="imsacclip:absolutePointing"/>
+            </choice>
+            <element ref="imsacclip:handedness"/>
+            <element ref="imsacclip:doubleClickSpeed"/>
+            <element ref="imsacclip:buttonAssignmentExternal" minOccurs="0"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="alternativeKeyboardElementType">
+        <sequence>
+            <element ref="imsacclip:alternativeKeyboardGeneric"/>
+            <element ref="imsacclip:application" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="alternativeKeyboardGenericElementType">
+        <complexContent>
+            <extension base="imsacclip:physicalKeyboardType">
+                <sequence>
+                    <element ref="imsacclip:resizableKeys"/>
+                    <any namespace="##other" processContents="strict" 
+                        minOccurs="0" maxOccurs="unbounded"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="applicationElementType">
+        <sequence>
+            <element ref="imsacclip:param" minOccurs="0" 
+                maxOccurs="unbounded"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+        <attributeGroup ref="imsacclip:attrApplication"/>
+    </complexType>
+    <complexType name="autoScanningElementType">
+        <complexContent>
+            <extension base="imsacclip:scanningElementBaseType">
+                <sequence>
+                    <element ref="imsacclip:autoScanInitDelay"/>
+                    <element ref="imsacclip:autoScanRepeat"/>
+                    <element name="switchAssignment" 
+                  type="imsacclip:groupItemScanningSwitchAssignmentElementType"
+                  form="qualified" maxOccurs="unbounded"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="brailleElementType">
+        <sequence>
+            <element ref="imsacclip:brailleGeneric"/>
+            <element ref="imsacclip:application" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="brailleGenericElementType">
+        <sequence>
+            <element ref="imsacclip:grade"/>
+            <element ref="imsacclip:numDots"/>
+            <element ref="imsacclip:numCells"/>
+            <element ref="imsacclip:markHighlight"/>
+            <element ref="imsacclip:markBold"/>
+            <element ref="imsacclip:markUnderline"/>
+            <element ref="imsacclip:markItalic"/>
+            <element ref="imsacclip:markStrikeout"/>
+            <element ref="imsacclip:markColor"/>
+            <element ref="imsacclip:dotPressure"/>
+            <element ref="imsacclip:statusCell"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="captionTypeElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <sequence>
+                    <choice>
+                        <element ref="imsacclip:verbatim" minOccurs="0"/>
+                        <element ref="imsacclip:reducedReadingLevel" minOccurs="0"/>
+                    </choice>
+                    <element ref="imsacclip:reducedSpeed" minOccurs="0"/>
+                    <element ref="imsacclip:enhancedCaption" minOccurs="0"/>
+                    <any namespace="##other" processContents="strict" minOccurs="0" 
+                        maxOccurs="unbounded"/>
+                </sequence>
+                <attribute ref="xml:lang" default="en"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="commandControlElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <sequence>
+                    <element ref="imsacclip:vocabulary" minOccurs="0"/>
+                    <element ref="imsacclip:feedback" minOccurs="0"/>
+                    <element ref="imsacclip:mouse" minOccurs="0"/>
+                </sequence>
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="codeSelectionElementType"/>
+    <complexType name="codeTerminationElementType">
+        <sequence>
+            <element ref="imsacclip:codeRate" minOccurs="0"/>
+        </sequence>
+        <attribute name="value" default="switch" 
+            type="imsacclip:codeTerminationType"/>
+    </complexType>
+    <complexType name="codedInputElementType">
+        <sequence>
+            <element ref="imsacclip:code"/>
+            <element ref="imsacclip:codeSwitchNumber"/>
+            <element ref="imsacclip:codeTermination"/>
+            <element ref="imsacclip:codeSelect"/>
+            <element ref="imsacclip:switchType"/>
+            <element ref="imsacclip:codeExternal" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="colorAvoidanceElementType">
+        <sequence>
+            <element ref="imsacclip:avoidBlueYellow" minOccurs="0"/>
+            <element ref="imsacclip:avoidGreenYellow" minOccurs="0"/>
+            <element ref="imsacclip:avoidOrange" minOccurs="0"/>
+            <element ref="imsacclip:avoidPurpleGray" minOccurs="0"/>
+            <element ref="imsacclip:avoidRed" minOccurs="0"/>
+            <element ref="imsacclip:avoidRedBlack" minOccurs="0"/>
+            <element ref="imsacclip:avoidRedGreen" minOccurs="0"/>
+            <element ref="imsacclip:useMaximumContrastMonochrome" 
+                minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="contentElementType">
+        <sequence>
+            <element ref="imsacclip:alternativesToVisual" minOccurs="0"/>
+            <element ref="imsacclip:alternativesToText" minOccurs="0"/>
+            <element ref="imsacclip:alternativesToAuditory" minOccurs="0"/>
+            <element ref="imsacclip:learnerScaffold" minOccurs="0" 
+                maxOccurs="unbounded"/>
+            <element ref="imsacclip:personalStylesheet" minOccurs="0"/>
+            <element ref="imsacclip:extraTime" minOccurs="0"/>
+            <element ref="imsacclip:futureTechnology" minOccurs="0" 
+                maxOccurs="unbounded"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+        <anyAttribute namespace="##other" processContents="strict"/>
+    </complexType>
+    <complexType name="contextElementType">
+        <sequence>
+            <element ref="imsacclip:display" minOccurs="0"/>
+            <element ref="imsacclip:control" minOccurs="0"/>
+            <element ref="imsacclip:content" minOccurs="0"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+        <attribute name="identifier" use="required" type="ID"/>
+        <attribute name="external" type="anyURI"/>
+        <attribute ref="xml:lang"/>
+        <anyAttribute namespace="##other" processContents="strict"/>
+    </complexType>
+    <complexType name="controlElementType">
+        <sequence>
+            <element ref="imsacclip:keyboardEnhanced" minOccurs="0"/>
+            <element ref="imsacclip:onscreenKeyboard" minOccurs="0"/>
+            <element ref="imsacclip:alternativeKeyboard" minOccurs="0"/>
+            <element ref="imsacclip:mouseEmulation" minOccurs="0"/>
+            <element ref="imsacclip:alternativePointing" minOccurs="0"/>
+            <element ref="imsacclip:voiceRecognition" minOccurs="0"/>
+            <element ref="imsacclip:codedInput" minOccurs="0"/>
+            <element ref="imsacclip:prediction" minOccurs="0"/>
+            <element ref="imsacclip:structuralNavigation" minOccurs="0"/>
+            <element ref="imsacclip:futureTechnology" minOccurs="0" 
+                maxOccurs="unbounded"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+        <anyAttribute namespace="##other" processContents="strict"/>
+    </complexType>
+    <complexType name="debounceElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <sequence>
+                    <element ref="imsacclip:debounceInterval" minOccurs="0"/>
+                </sequence>
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="dictationElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <sequence>
+                    <element ref="imsacclip:voiceProfileExternal" minOccurs="0"/>
+                </sequence>
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="directedScanningElementType">
+        <complexContent>
+            <extension base="imsacclip:scanningElementBaseType">
+                <sequence>
+                    <element ref="imsacclip:dwellTime" minOccurs="0"/>
+                    <element name="switchAssignment" 
+                  type="imsacclip:directedScanningSwitchAssignmentElementType" 
+                  form="qualified" maxOccurs="unbounded"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="displayElementType">
+        <sequence>
+            <element ref="imsacclip:screenReader" minOccurs="0"/>
+            <element ref="imsacclip:screenEnhance" minOccurs="0"/>
+            <element ref="imsacclip:textReadingHighlight" minOccurs="0"/>
+            <element ref="imsacclip:braille" minOccurs="0"/>
+            <element ref="imsacclip:tactile" minOccurs="0"/>
+            <element ref="imsacclip:visualAlert" minOccurs="0"/>
+            <element ref="imsacclip:structuralPresentation" minOccurs="0"/>
+            <element ref="imsacclip:futureTechnology" minOccurs="0" 
+                maxOccurs="unbounded"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+        <anyAttribute namespace="##other" processContents="strict"/>
+    </complexType>
+    <complexType name="fontFaceElementType">
+        <sequence>
+            <element ref="imsacclip:fontName" minOccurs="0" 
+                maxOccurs="unbounded"/>
+            <element ref="imsacclip:genericFace"/>
+        </sequence>
+    </complexType>
+    <complexType name="futureTechnologyElementType">
+        <sequence>
+            <element ref="imsacclip:application" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="inverseScanningElementType">
+        <complexContent>
+            <extension base="imsacclip:scanningElementBaseType">
+                <sequence>
+                    <element ref="imsacclip:dwellTime" minOccurs="0"/>
+                    <element name="switchAssignment" 
+                type="imsacclip:groupItemScanningSwitchAssignmentElementType" 
+                form="qualified" maxOccurs="unbounded"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="keyboardEnhancedElementType">
+        <sequence>
+            <element ref="imsacclip:keyboardEnhancedGeneric"/>
+            <element ref="imsacclip:application" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="keyboardEnhancedGenericElementType">
+        <complexContent>
+            <extension base="imsacclip:physicalKeyboardType">
+                <sequence>
+                    <any namespace="##other" processContents="strict" 
+                        minOccurs="0" maxOccurs="unbounded"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="mouseEmulationElementType">
+        <sequence>
+            <element ref="imsacclip:mouseEmulationGeneric"/>
+            <element ref="imsacclip:application" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="mouseEmulationGenericElementType">
+        <sequence>
+            <element ref="imsacclip:speed"/>
+            <element ref="imsacclip:acceleration"/>
+            <element ref="imsacclip:device"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="onscreenKeyboardElementType">
+        <sequence>
+            <element ref="imsacclip:onscreenKeyboardGeneric"/>
+            <element ref="imsacclip:application" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="onscreenKeyboardGenericElementType">
+        <sequence>
+            <choice>
+                <element ref="imsacclip:alphaLayoutInternal"/>
+                <element ref="imsacclip:alphaLayoutExternal"/>
+            </choice>
+            <choice>
+                <element ref="imsacclip:pointAndClick"/>
+                <element ref="imsacclip:pointAndDwell"/>
+                <element ref="imsacclip:autoScanning"/>
+                <element ref="imsacclip:inverseScanning"/>
+                <element ref="imsacclip:directedScanning"/>
+                <element ref="imsacclip:codeSelection"/>
+            </choice>
+            <element name="keyHeight" 
+                type="imsacclip:keyHeightPercentageElementType" 
+                form="qualified"/>
+            <element name="keyWidth" 
+                type="imsacclip:keyWidthPercentageElementType" 
+                form="qualified"/>
+            <element name="keySpacing" 
+                type="imsacclip:keySpacingPercentageElementType" 
+                form="qualified"/>
+            <element ref="imsacclip:sound"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="physicalKeyboardType" abstract="true">
+        <sequence>
+            <choice>
+                <element ref="imsacclip:alphaLayoutInternal"/>
+                <element ref="imsacclip:alphaLayoutExternal"/>
+            </choice>
+            <element ref="imsacclip:stickyKeys"/>
+            <element ref="imsacclip:repeatKeys"/>
+            <element ref="imsacclip:slowKeys"/>
+            <element ref="imsacclip:debounce"/>
+        </sequence>
+    </complexType>
+    <complexType name="pointAndClickElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <sequence>
+                    <element ref="imsacclip:switchDelay"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="pointAndDwellElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <sequence>
+                    <element ref="imsacclip:dwellTime"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="predictionElementType">
+        <sequence>
+            <element ref="imsacclip:wordPrediction"/>
+            <element ref="imsacclip:wordCompletionPrediction"/>
+            <element ref="imsacclip:commandPrediction"/>
+            <element ref="imsacclip:numberChoicesDisplayed"/>
+            <element ref="imsacclip:personalLexicon" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="reducedSpeedElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <sequence>
+                    <element ref="imsacclip:captionRate" minOccurs="0"/>
+                </sequence>
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="relativePointingElementType">
+        <sequence>
+            <element ref="imsacclip:speed"/>
+            <element ref="imsacclip:acceleration"/>
+        </sequence>
+    </complexType>
+    <complexType name="repeatKeysElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <sequence>
+                    <element ref="imsacclip:autoRepeatDelay" minOccurs="0"/>
+                    <element ref="imsacclip:autoRepeatRate" minOccurs="0"/>
+                </sequence>
+                <attribute name="value" default="true" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="resizableKeysElementType">
+        <sequence>
+            <element name="keyHeight" type="imsacclip:keyHeightMMElementType" 
+                form="qualified" minOccurs="0"/>
+            <element name="keyWidth" type="imsacclip:keyWidthMMElementType" 
+                form="qualified" minOccurs="0"/>
+            <element name="keySpacing" 
+                type="imsacclip:keySpacingMMElementType" 
+                form="qualified" minOccurs="0"/>
+        </sequence>
+        <attribute name="value" default="true" type="boolean"/>
+    </complexType>
+    <complexType name="scanningElementBaseType" abstract="true">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <sequence>
+                    <element ref="imsacclip:scanSpeed"/>
+                    <element ref="imsacclip:scanSwitchDelay"/>
+                    <element ref="imsacclip:switchType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="screenReaderElementType">
+        <sequence>
+            <element ref="imsacclip:screenReaderGeneric"/>
+            <element ref="imsacclip:application" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="screenReaderGenericElementType">
+        <sequence>
+            <element ref="imsacclip:link" maxOccurs="unbounded"/>
+            <element ref="imsacclip:speechRate"/>
+            <element ref="imsacclip:pitch"/>
+            <element ref="imsacclip:volume"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="screenEnhanceElementType">
+        <sequence>
+            <element ref="imsacclip:screenEnhanceGeneric"/>
+            <element ref="imsacclip:application" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="screenEnhanceGenericElementType">
+        <sequence>
+            <element ref="imsacclip:fontFace"/>
+            <element ref="imsacclip:fontSize"/>
+            <element ref="imsacclip:foregroundColor"/>
+            <element ref="imsacclip:backgroundColor"/>
+            <element ref="imsacclip:highlightColor"/>
+            <element ref="imsacclip:invertedColorChoice"/>
+            <element ref="imsacclip:cursorSize"/>
+            <element ref="imsacclip:cursorColor"/>
+            <element ref="imsacclip:cursorTrails"/>
+            <element ref="imsacclip:tracking" minOccurs="0"/>
+            <element ref="imsacclip:magnification" minOccurs="0"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="slowKeysElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <sequence>
+                    <element ref="imsacclip:slowKeysInterval" minOccurs="0"/>
+                </sequence>
+                <attribute name="value" default="true" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="stickyKeysElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <sequence>
+                    <element ref="imsacclip:playSound" minOccurs="0"/>
+                </sequence>
+                <attribute name="value" default="true" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="structuralNavigationElementType">
+        <sequence>
+            <element ref="imsacclip:navigationDepth" minOccurs="0"/>
+            <element ref="imsacclip:useTableOfContents" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="structuralPresentationElementType">
+        <sequence>
+            <element ref="imsacclip:contentDensity" minOccurs="0"/>
+            <element ref="imsacclip:contentViews" minOccurs="0"/>
+            <element ref="imsacclip:showLinks" minOccurs="0"/>
+            <element ref="imsacclip:showTranscript" minOccurs="0"/>
+            <element ref="imsacclip:showNotes" minOccurs="0"/>
+            <element ref="imsacclip:windowLayout" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="tactileElementType">
+        <sequence>
+            <element ref="imsacclip:tactileGeneric"/>
+            <element ref="imsacclip:application" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="tactileGenericElementType">
+        <sequence>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="textReadingHighlightElementType">
+        <sequence>
+            <element ref="imsacclip:textReadingHighlightGeneric"/>
+            <element ref="imsacclip:application" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="textReadingHighlightGenericElementType">
+        <sequence>
+            <element ref="imsacclip:speechRate"/>
+            <element ref="imsacclip:pitch"/>
+            <element ref="imsacclip:volume"/>
+            <element ref="imsacclip:highlight"/>
+            <element ref="imsacclip:speakAltText"/>
+            <element ref="imsacclip:speakWhenTabbing"/>
+            <element ref="imsacclip:readingUnit"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="trackingElementType">
+        <sequence>
+            <element ref="imsacclip:mouse"/>
+            <element ref="imsacclip:caret"/>
+            <element ref="imsacclip:focus"/>
+        </sequence>
+    </complexType>
+    <complexType name="visualAlertElementType">
+        <sequence>
+            <element ref="imsacclip:visualAlertGeneric"/>
+            <element ref="imsacclip:application" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="visualAlertGenericElementType">
+        <sequence>
+            <element ref="imsacclip:systemSounds"/>
+            <element ref="imsacclip:captions"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="voiceRecognitionElementType">
+        <sequence>
+            <element ref="imsacclip:voiceRecognitionGeneric"/>
+            <element ref="imsacclip:application" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="voiceRecognitionGenericElementType">
+        <sequence>
+            <element ref="imsacclip:microphoneGain"/>
+            <element ref="imsacclip:controlsWindow"/>
+            <element ref="imsacclip:dictation"/>
+            <element ref="imsacclip:commandControl"/>
+            <any namespace="##other" processContents="strict" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <!--**********************************-->		
+    <!--** ATTRIBUTE-ONLY COMPLEX TYPES **-->		
+    <!--**********************************-->
+    
+    <complexType name="absolutePointingElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType"/>
+        </complexContent>
+    </complexType>
+    <complexType name="accelerationElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.5" 
+                    type="imsacclip:sliderType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="alphaLayoutInternalElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="standard" 
+                    type="imsacclip:keyboardLayoutType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="alphaLayoutExternalElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" use="required" type="anyURI"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="altTextLangElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute ref="xml:lang"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="usageLipMDBaseType" abstract="true">
+        <sequence>
+            <element ref="imslip:contentype" minOccurs="0"/>
+        </sequence>
+        <attribute name="usage" type="imsacclip:usageType"/>
+        <anyAttribute namespace="##other" processContents="strict"/>
+    </complexType>
+    <complexType name="audioDescriptionElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attributeGroup ref="imsacclip:attrAudioDescription"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="autoRepeatDelayElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.5" 
+                    type="imsacclip:sliderType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="autoRepeatRateElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.5" 
+                    type="imsacclip:sliderType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="autoScanInitDelayElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.0">
+                    <simpleType>
+                        <restriction base="float">
+                            <minInclusive value="0.0"/>
+                        </restriction>
+                    </simpleType>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="autoScanRepeatElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="1" 
+                    type="imsacclip:autoScanRepeatType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="avoidColorElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="backgroundColorElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="ffffffff" 
+                    type="imsacclip:colorType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="buttonAssignmentExternalElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" use="required" type="anyURI"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="captionRateElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="120" 
+                    type="imsacclip:captionRateType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="captionsElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="caretElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="true" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="codeElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="morse" 
+                    type="imsacclip:codeType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="codeRateElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="3.0">
+                    <simpleType>
+                        <restriction base="float">
+                            <minInclusive value="0.5"/>
+                            <maxInclusive value="20.0"/>
+                        </restriction>
+                    </simpleType>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="codeSwitchNumberElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="1" 
+                    type="imsacclip:codeSwitchNumberType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="codeSelectElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="pointAndClick" 
+                    type="imsacclip:directSelectionType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="codeExternalElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" type="anyURI"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="commandPredictionElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="contentDensityElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="detailed" 
+                    type="imsacclip:contentDensityType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="contentViewsElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="imageIntensive" 
+                    type="imsacclip:contentViewsType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="controlsWindowElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="true" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="cursorColorElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="ffffffff" 
+                    type="imsacclip:colorType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="cursorSizeElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.5" 
+                    type="imsacclip:sliderType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="cursorTrailsElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.5" 
+                    type="imsacclip:sliderType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="debounceIntervalElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.5">
+                    <simpleType>
+                        <restriction base="float">
+                            <minInclusive value="0.0"/>
+                            <maxInclusive value="5.0"/>
+                        </restriction>
+                    </simpleType>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="deviceElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="keypad" 
+                    type="imsacclip:inputDeviceType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="directedScanningSwitchAssignmentElementType">
+        <attribute name="number" use="required" type="positiveInteger"/>
+        <attribute name="value" default="select" 
+            type="imsacclip:directedScanningSwitchAssignmentType"/>
+    </complexType>
+    <complexType name="dotPressureElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.5" 
+                    type="imsacclip:sliderType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="doubleClickSpeedElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.4">
+                    <simpleType>
+                        <restriction base="float">
+                            <minInclusive value="0.1"/>
+                            <maxInclusive value="1.0"/>
+                        </restriction>
+                    </simpleType>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="dwellTimeElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.5">
+                    <simpleType>
+                        <restriction base="float">
+                            <minInclusive value="0.0"/>
+                            <maxInclusive value="3.0"/>
+                        </restriction>
+                    </simpleType>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="enhancedCaptionElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="extraTimeElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="1.0" 
+                    type="imsacclip:multiplierType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="feedbackElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="true" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="focusElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="true" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="fontNameElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" use="required" type="string"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="fontSizeElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" use="required" type="positiveInteger"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="foregroundColorElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="ff000000" 
+                    type="imsacclip:colorType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="genericFaceElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="sansSerif" 
+                    type="imsacclip:genericFaceType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="gradeElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="1" 
+                    type="imsacclip:brailleGradeType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="graphicAlternativeElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="groupItemScanningSwitchAssignmentElementType">
+        <attribute name="number" use="required" type="positiveInteger"/>
+        <attribute name="value" default="select" 
+            type="imsacclip:groupItemScanningSwitchAssignmentType"/>
+    </complexType>
+    <complexType name="handednessElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="right" 
+                    type="imsacclip:handednessType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="highlightColorElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="ffff0000" 
+                    type="imsacclip:colorType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="highlightElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="word" 
+                    type="imsacclip:highlightType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="invertedColorChoiceElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="keyHeightMMElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="10">
+                    <simpleType>
+                        <restriction base="integer">
+                            <maxInclusive value="100"/>
+                            <minInclusive value="1"/>
+                        </restriction>
+                    </simpleType>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="keyHeightPercentageElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.12" 
+                    type="imsacclip:percentageType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="keySpacingMMElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0">
+                    <simpleType>
+                        <restriction base="integer">
+                            <maxInclusive value="100"/>
+                            <minInclusive value="0"/>
+                        </restriction>
+                    </simpleType>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="keySpacingPercentageElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.12" 
+                    type="imsacclip:percentageType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="keyWidthMMElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="10">
+                    <simpleType>
+                        <restriction base="positiveInteger"/>
+                    </simpleType>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="keyWidthPercentageElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.12" 
+                    type="imsacclip:percentageType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="linkElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="speakLink" 
+                    type="imsacclip:linkActionType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="longDescriptionLangElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute ref="xml:lang"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="magnificationElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="1">
+                    <simpleType>
+                        <restriction base="positiveInteger">
+                            <maxInclusive value="20"/>
+                        </restriction>
+                    </simpleType>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="markBoldElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="markColorElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="markHighlightElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="markItalicElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="markStrikeoutElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="markUnderlineElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="microphoneGainElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.5" 
+                    type="imsacclip:sliderType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="mouseElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="true" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="navigationDepthElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" type="imsacclip:navigationDepthType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="numberChoicesDisplayedElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="5">
+                    <simpleType>
+                        <restriction base="positiveInteger">
+                            <maxInclusive value="20"/>
+                        </restriction>
+                    </simpleType>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="numCellsElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="80" 
+                    type="imsacclip:brailleCellCountType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="numDotsElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="6" 
+                    type="imsacclip:brailleDotCountType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="paramElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attributeGroup ref="imsacclip:attrParam"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="personalLexiconElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" type="anyURI"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="personalStylesheetElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" type="anyURI"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="pitchElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.5" 
+                    type="imsacclip:sliderType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="playSoundElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="readingUnitElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="word" 
+                    type="imsacclip:highlightType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="reducedReadingLevelElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="learnerScaffoldElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" type="imsacclip:scaffoldingType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="scanSpeedElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.0">
+                    <simpleType>
+                        <restriction base="float">
+                            <minInclusive value="0.0"/>
+                            <maxInclusive value="30.0"/>
+                        </restriction>
+                    </simpleType>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="scanSwitchDelayElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.0">
+                    <simpleType>
+                        <restriction base="float">
+                            <minInclusive value="0.0"/>
+                            <maxInclusive value="30.0"/>
+                        </restriction>
+                    </simpleType>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="showLinksElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="showNotesElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="true" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="useTableOfContentsElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="true" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="showTranscriptElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="signLanguageElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" use="required" 
+                    type="imsacclip:signLanguageType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="slowKeysIntervalElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.2" 
+                    type="imsacclip:sliderType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="soundElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="true" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="speakAltTextElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="true" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="speakWhenTabbingElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="true" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="speechRateElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="180" 
+                    type="imsacclip:speechRateType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="speedElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.5" 
+                    type="imsacclip:sliderType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="statusCellElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="off" 
+                    type="imsacclip:brailleStatusCellType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="windowLayoutElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="frontMost" 
+                    type="imsacclip:windowLayoutType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="switchDelayElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.0">
+                    <simpleType>
+                        <restriction base="float">
+                            <minInclusive value="0.0"/>
+                            <maxInclusive value="30.0"/>
+                        </restriction>
+                    </simpleType>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="switchTypeElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="mouse" 
+                    type="imsacclip:switchInputType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="systemSoundsElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="none" 
+                    type="imsacclip:soundReplacementType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="useMaximumContrastMonochromeElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="verbatimCaptionLangElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute ref="xml:lang"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="verbatimElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="true" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="vocabularyElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="context" 
+                    type="imsacclip:vocabularyContextType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="voiceProfileExternalElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" use="required" type="anyURI"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="volumeElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="0.5" 
+                    type="imsacclip:sliderType"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="wordCompletionPredictionElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="wordPredictionElementType">
+        <complexContent>
+            <extension base="imsacclip:usageLipMDBaseType">
+                <attribute name="value" default="false" type="boolean"/>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <!-- ****************** -->
+    <!-- ** SIMPLE TYPES ** -->
+    <!-- ****************** -->
+
+    <simpleType name="audioDescriptionType">
+        <restriction base="token">
+            <enumeration value="standard"/>
+            <enumeration value="expanded"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="autoScanRepeatType">
+        <restriction base="token">
+            <enumeration value="1"/>
+            <enumeration value="2"/>
+            <enumeration value="3"/>
+            <enumeration value="4"/>
+            <enumeration value="5"/>
+            <enumeration value="infinity"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="brailleCellCountType">
+        <restriction base="integer">
+            <minInclusive value="8"/>
+            <maxInclusive value="120"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="brailleDotCountType">
+        <restriction base="integer">
+            <enumeration value="6"/>
+            <enumeration value="8"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="brailleGradeType">
+        <restriction base="token">
+            <enumeration value="1"/>
+            <enumeration value="2"/>
+            <enumeration value="contracted"/>
+            <enumeration value="uncontracted"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="brailleStatusCellType">
+        <restriction base="token">
+            <enumeration value="left"/>
+            <enumeration value="right"/>
+            <enumeration value="off"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="captionRateType">
+        <restriction base="integer">
+            <minInclusive value="1"/>
+            <maxInclusive value="300"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="codeType">
+        <restriction base="token">
+            <enumeration value="morse"/>
+            <enumeration value="quartering"/>
+            <enumeration value="eightCell"/>
+            <enumeration value="chordic"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="codeSwitchNumberType">
+        <restriction base="integer">
+            <minInclusive value="1"/>
+            <maxInclusive value="150"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="codeTerminationType">
+        <restriction base="token">
+            <enumeration value="switch"/>
+            <enumeration value="timed"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="colorType">
+        <restriction base="hexBinary">
+            <length value="4"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="contentDensityType">
+        <restriction base="token">
+            <enumeration value="detailed"/>
+            <enumeration value="overview"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="contentViewsType">
+        <restriction base="token">
+            <enumeration value="imageIntensive"/>
+            <enumeration value="textIntensive"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="directSelectionType">
+        <restriction base="token">
+            <enumeration value="pointAndClick"/>
+            <enumeration value="pointAndDwell"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="directedScanningSwitchAssignmentType">
+        <restriction base="token">
+            <enumeration value="select"/>
+            <enumeration value="cancel"/>
+            <enumeration value="right"/>
+            <enumeration value="left"/>
+            <enumeration value="up"/>
+            <enumeration value="down"/>
+            <enumeration value="horizontal"/>
+            <enumeration value="vertical"/>
+            <enumeration value="scan"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="genericFaceType">
+        <list>
+            <simpleType>
+                <restriction base="token">
+                    <enumeration value="serif"/>
+                    <enumeration value="sansSerif"/>
+                    <enumeration value="monospaced"/>
+                    <enumeration value="cursive"/>
+                    <enumeration value="fantasy"/>
+                </restriction>
+            </simpleType>
+        </list>
+    </simpleType>
+    <simpleType name="groupItemScanningSwitchAssignmentType">
+        <restriction base="token">
+            <enumeration value="select"/>
+            <enumeration value="cancel"/>
+            <enumeration value="scan"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="handednessType">
+        <restriction base="token">
+            <enumeration value="left"/>
+            <enumeration value="right"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="highlightType">
+        <restriction base="token">
+            <enumeration value="word"/>
+            <enumeration value="line"/>
+            <enumeration value="sentence"/>
+            <enumeration value="paragraph"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="inputDeviceType">
+        <restriction base="token">
+            <enumeration value="keypad"/>
+            <enumeration value="keyboard"/>
+            <enumeration value="switch"/>
+            <enumeration value="voice"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="keyboardLayoutType">
+        <restriction base="token">
+            <enumeration value="standard"/>
+            <enumeration value="sequential"/>
+            <enumeration value="frequency"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="linkActionType">
+        <restriction base="token">
+            <enumeration value="differentVoice"/>
+            <enumeration value="soundEffect"/>
+            <enumeration value="speakLink"/>
+            <enumeration value="none"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="multiplierType">
+        <restriction base="float">
+            <maxInclusive value="10.0"/>
+            <minInclusive value="0.0"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="navigationDepthType">
+        <restriction base="token">
+            <enumeration value="breadthFirst"/>
+            <enumeration value="depthFirst"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="percentageType">
+        <restriction base="float">
+            <maxInclusive value="1"/>
+            <minInclusive value="0"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="scaffoldingType">
+        <restriction base="token">
+            <enumeration value="dictionary"/>
+            <enumeration value="calculator"/>
+            <enumeration value="noteTaking"/>
+            <enumeration value="peerInteraction"/>
+            <enumeration value="thesaurus"/>
+            <enumeration value="abacus"/>
+            <enumeration value="spellChecker"/>
+            <enumeration value="homophoneChecker"/>
+            <enumeration value="mindMappingSoftware"/>
+            <enumeration value="outlineTool"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="schemaVersionType">
+        <restriction base="string">
+            <pattern value="[0-9]+\.[0-9]+\.[0-9]+"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="signLanguageType">
+        <restriction base="token">
+            <enumeration value="American-ASL"/>
+            <enumeration value="Australian-Auslan"/>
+            <enumeration value="Austrian"/>
+            <enumeration value="British-BSL"/>
+            <enumeration value="Danish-DSL"/>
+            <enumeration value="French-LSF"/>
+            <enumeration value="German-DGS"/>
+            <enumeration value="Irish-ISL"/>
+            <enumeration value="Italian-LIS"/>
+            <enumeration value="Japanese-JSL"/>
+            <enumeration value="Malaysian-MSL"/>
+            <enumeration value="Mexican-LSM"/>
+            <enumeration value="Native-American"/>
+            <enumeration value="Norwegian-NSL"/>
+            <enumeration value="Russian-RSL"/>
+            <enumeration value="Quebec-LSQ"/>
+            <enumeration value="Singapore-SLS"/>
+            <enumeration value="Netherlands-NGT"/>
+            <enumeration value="Spanish-LSE"/>
+            <enumeration value="Swedish"/>
+            <enumeration value="other"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="sliderType">
+        <restriction base="float">
+            <maxInclusive value="1"/>
+            <minInclusive value="0"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="soundReplacementType">
+        <restriction base="token">
+            <enumeration value="desktop"/>
+            <enumeration value="window"/>
+            <enumeration value="captionBar"/>
+            <enumeration value="none"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="speechRateType">
+        <restriction base="integer">
+            <maxInclusive value="1000"/>
+            <minInclusive value="1"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="switchInputType">
+        <restriction base="token">
+            <enumeration value="mouse"/>
+            <enumeration value="game"/>
+            <enumeration value="serial"/>
+            <enumeration value="usb"/>
+            <enumeration value="firewire"/>
+            <enumeration value="infrared"/>
+            <enumeration value="bluetooth"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="usageType">
+        <restriction base="token">
+            <enumeration value="required"/>
+            <enumeration value="preferred"/>
+            <enumeration value="optionallyUse"/>
+            <enumeration value="notUse"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="vocabularyContextType">
+        <restriction base="token">
+            <enumeration value="natural"/>
+            <enumeration value="context"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="windowLayoutType">
+        <restriction base="token">
+            <enumeration value="tiled"/>
+            <enumeration value="overlap"/>
+            <enumeration value="frontMost"/>
+        </restriction>
+    </simpleType>
+
+</schema>

@@ -1,0 +1,8 @@
+FasseTrack 4.0
+
+FasseTrack is a powerful asset management system for
+electronic tracking of fixed assets within each area of
+your organization.
+
+This version of FasseTrack 4.0 is for evaluation only.
+

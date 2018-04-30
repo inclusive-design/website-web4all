@@ -1,0 +1,34 @@
+Web-4-All Preference Wizard Demo Version, © 2003, University of Toronto. 
+All Rights Reserved.
+
+PERMISSION TO USE THIS SOFTWARE IS CONDITIONAL UPON YOU AGREEING TO THE DISCLAIMER 
+AND LICENSE TERMS. BY INSTALLING OR USING THE SOFTWARE YOU CONSENT TO BE BOUND BY 
+AND BECOME A PARTY TO THIS AGREEMENT.
+
+The University of Toronto hereby grants you a non-exclusive personal license to use 
+this version of Web-4-All Preference Wizard Demo Version (Software) and its 
+documentation subject to the following disclaimer, terms and conditions:
+
+The information contained in the Software is proprietary to the University 
+of Toronto and the University of Toronto retains title to all copyright, 
+patent, trademark, trade secrets, and other proprietary rights embodied in 
+or related to the Software. 
+
+Web-4-All Preference Wizard Demo Version is experimental Software developed by the 
+Adaptive Technology Resource Centre of the University of Toronto. It is provided 
+"as is" without any warranties, terms or conditions with regard to 
+merchantability, fitness for a particular purpose, title, and non-infringement, 
+whether implied or statutory.  To the extent not prohibited by law, in no event 
+will the University of Toronto or its Licensors be liable to any person for any 
+direct, indirect, special, incidental, or consequential damages of any kind, 
+including without limitation, damages for loss of business or profit, or computer
+failure or malfunction.  Use of Software is governed by the terms of this Software 
+license agreement that accompanies or is included with Software.
+
+All rights of any kind in the Software which are not expressly granted in 
+this license are entirely and exclusively reserved to and by the University 
+of Toronto.
+
+
+
+

@@ -1,0 +1,20 @@
+Installation Instructions
+1. Run Setup.exe
+2. Read and then accept the runtime licence agreement.
+3. Choose a destination for the application to be installed. Minimum free disk space required is 12 Mb.
+4. If you don't have the minimum version of the Java Software installed on your system you will be presented with a message box asking if you want the setup to install the Java software for you. Press the YES button. If you select NO the setup will not complete.
+5. If you don't have the minimum version of the Java Software installed on your system and you selected YES to have the setup install the Java software now then the Java software will be installed at this point.
+	- Read the Java Runtime Environment licence agreement.
+	- Choose the "I Accept" option by clicking on it and then press the next button.
+	- Choose the next button on the "Setup Type" window. Typical is the default setup type.
+	- Continue clicking next until the Java software finishes installing.
+	- When setup has completed click the Finish button.
+	- Setup returns to the installation of the Web-4-All Preference Wizard Demo.
+6. Setup starts to copy files you your computer, please wait.
+7. When setup has completed click the Finish button.
+
+Trouble Shooting
+1. Java software version 1.3 or higher is required for the Web-4-All Preference Wizard to run. The Java Runtime Environment (JRE) is freely downloadable from www.java.com. If you don't want the Web-4-All setup to install the Java Software, install the Java Software yourself before starting the Web-4-All demo installation.
+2. If you get an error during the Java installation you will have to uninstall both the Java Runtime environment and the Web-4-All Preference Wizard Demo application before attempting to reinstall.
+3. Setup will on the following operating systems: Windows 98, Windows ME, Windows 2000 and Windows XP.
+

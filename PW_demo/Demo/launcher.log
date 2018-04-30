@@ -1,0 +1,20 @@
+Web-4-All-PWM startup log.
+
+Moving to the directory: 3rd_party......
+3rd_party directory not found.
+Moving to the directory: lib......
+Current directory is D:\My Documents\CSLTProjects\Web4All_cd_proj\CD_Dev\CD_Image\Demo\lib
+JAR wild card: *.jar
+The first JAR file found is regexp.jar
+The next JAR file found is Web4AllPrefsDemo.jar
+The next JAR file found is xalan.jar
+The next JAR file found is xercesImpl.jar
+The next JAR file found is xml-apis.jar
+The next JAR file found is xmlParserAPIs.jar
+Moving up to parent directory......
+Current directory is D:\My Documents\CSLTProjects\Web4All_cd_proj\CD_Dev\CD_Image\Demo
+
+Final CLASSPATH: "D:\My Documents\CSLTProjects\Web4All_cd_proj\CD_Dev\CD_Image\Demo\lib\xmlParserAPIs.jar";"D:\My Documents\CSLTProjects\Web4All_cd_proj\CD_Dev\CD_Image\Demo\lib\xml-apis.jar";"D:\My Documents\CSLTProjects\Web4All_cd_proj\CD_Dev\CD_Image\Demo\lib\xercesImpl.jar";"D:\My Documents\CSLTProjects\Web4All_cd_proj\CD_Dev\CD_Image\Demo\lib\xalan.jar";"D:\My Documents\CSLTProjects\Web4All_cd_proj\CD_Dev\CD_Image\Demo\lib\Web4AllPrefsDemo.jar";"D:\My Documents\CSLTProjects\Web4All_cd_proj\CD_Dev\CD_Image\Demo\lib\regexp.jar";
+
+Main class: ca.utoronto.atrc.web4all.Web4All
+Spawning Web4All for the first time............

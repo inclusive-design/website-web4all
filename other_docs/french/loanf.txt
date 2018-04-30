@@ -1,0 +1,153 @@
+Gouvernement du Canada
+Government of Canada
+Bureau d'accessibilité au Web d'Industrie Canada
+LE WEB POUR TOUS
+Entente de prêt pour le technologie
+
+---------------------------------------------------------------------------
+LE WEB POUR TOUS
+
+CONTRAT établi le
+
+Date : (champ libre)
+
+ENTRE : SA MAJESTÉ LA REINE DU CHEF DU CANADA, représentée aux présentes
+par le ministre de l'Industrie,
+
+ci-après appelée « le Prêteur »,
+
+D'UNE PART;
+
+ET : (champ libre) constituée ou enregistrée sous le régime des lois de la
+province de (champ libre) (Canada),
+
+ci-après appelée « l'Emprunteur »,
+
+D'AUTRE PART,
+
+OBJET :
+
+A. En contrepartie de la fourniture par l'Emprunteur d'un large accès à la
+   technologie de l'information au public canadien, y compris les personnes
+   ayant un handicap ou un problème de littératie, et compte tenu des
+   conditions énoncées ci-après, le Prêteur prête à l'Emprunteur,
+   conformément au présent contrat (« Prêt »), l'équipement décrit à
+   l'annexe « A » (l'Équipement), lequel doit être utilisé exclusivement
+   dans les locaux de l'Emprunteur également décrits à l'annexe « A ».
+B. Le Prêteur accorde à l'Emprunteur une sous-licence à l'égard de la
+   licence relative au Web pour tous qu'Industrie Canada a obtenue du
+   Resource Centre for Academic Technology de l'Université de Toronto
+   conformément aux conditions de la licence énoncées à l'annexe « B ».
+C. L'Emprunteur conserve l'Équipement à compter de la date de la signature
+   du contrat jusqu'à la date à laquelle le Prêt prend fin et s'engage à
+   respecter les modalités de celui ci.
+
+MODALITÉS A. ÉQUIPEMENT
+
+1. L'Emprunteur ne peut vendre ou céder l'Équipement ou le présent Prêt.
+2. L'Emprunteur ne peut permettre qu'une demande ou réclamation soit
+   formulée contre le Prêteur par suite de dommages causés à l'Équipement
+   ou par celui-ci.
+3. L'Équipement est utilisé exclusivement pour fournir aux membres du
+   public ayant un handicap ou un problème de littératie l'accès à des
+   ordinateurs et à l'Internet.
+4. Pendant la durée du présent Prêt, l'Emprunteur conserve ledit Équipement
+   en bon état et le Prêteur a le droit de faire inspecter celui-ci en tout
+   temps raisonnable par un de ses représentants.
+5. L'Équipement demeure la propriété d'Industrie Canada.
+6. Si le Prêteur lui demande par écrit de mettre fin au présent Prêt,
+   l'Emprunteur retournera audit Prêteur ou au représentant de celui-ci
+   l'Équipement en bon état, sous réserve de l'usure normale.
+7. L'Emprunteur dédommage en tout temps le Prêteur des réclamations, frais,
+   préjudices, actions ou autres procédures occasionnés par la signature du
+   présent contrat, par une mesure prise en vertu des présentes ou par
+   l'exercice de droits découlant des présentes, sauf en ce qui a trait aux
+   préjudices résultant de la négligence d'un fonctionnaire ou préposé de
+   Sa Majesté du chef du Canada dans le cadre de ses fonctions.
+8. Le présent contrat lie les parties ainsi que leurs successeurs et ayants
+   droit autorisés.
+9. Aucun membre du Parlement du Canada ne peut participer à un contrat
+   conclu ou à une commission accordée conformément au présent Prêt ou à un
+   avantage en découlant.
+10. L'Emprunteur garantit que toute personne qui exerce des pressions pour
+   son compte afin d'obtenir le présent contrat ou un avantage en découlant
+   et qui est tenue de s'enregistrer conformément à la Loi sur
+   l'enregistrement des lobbyistes, L.R.C. (1985), ch. 44 (4e suppl.), est
+   ainsi enregistrée.
+
+B. SOUS-LICENCE
+
+1. Le Prêteur accorde par les présentes à l'Emprunteur une sous-licence non
+   exclusive, entièrement acquittée et exempte de redevances aux fins de
+   l'exercice des droits de propriété intellectuelle (droits PI) afférents
+   à la licence tant et aussi longtemps que les droits en question se
+   rattachent à l'Équipement visé par les présentes et uniquement pendant
+   la durée du Prêt.
+2. La présente sous-licence est assujettie aux conditions générales de la
+   licence. Toute révocation de la licence entraîne automatiquement la
+   révocation de la présente sous-licence.
+3. L'Emprunteur n'a pas le droit d'accorder de sous-licence à l'égard de la
+   sous-licence ou d'autoriser par ailleurs une partie à exercer l'un ou
+   l'autre des droits PI sur la licence ou la présente sous-licence.
+4. L'Emprunteur s'engage à détruire à la fin du présent Prêt toute copie
+   supplémentaire des documents attestant les droits PI sous licence
+   découlant du présent Prêt.
+5. Toute inobservation des conditions de la présente sous-licence entraîne
+   automatiquement la révocation de celle-ci.
+
+EN FOI DE QUOI les parties aux présentes ont signé le présent document à la
+date indiquée à la page frontispice des présentes.
+
+SIGNÉ ET DÉLIVRÉ par le Prêteur en présence de
+
+(champ libre)
+Témoin
+
+(champ libre)
+Pour le Prêteur
+
+SIGNÉ ET DÉLIVRÉ par le Prêteur en présence de
+
+(champ libre)
+Témoin
+
+(champ libre)
+Pour l'Emprunteur
+
+ANNEXE A LISTE ET EMPLACEMENT DE L'ÉQUIPEMENT
+
+Trousse complète n° ____ contenant ce qui suit :
+
+DESCRIPTION DE L'ÉQUIPEMENT :
+
+• 1 Kensington Orbit Trackball (boule de commande)
+• 1 Lecteur de carte Hitachi, port en série externe
+• 1 CD d'installation contenant le logiciel relatif au programme Web pour
+  tous et les programmes Opera, HomePage Reader, eReader et Visual Dynamic
+  Keyboard
+• Matériel de formation disponible en braille en gros caractères et sur
+  bande sonore
+• Manuel d'installation et de soutien technique
+
+Veuillez indiquer le ou les numéros de série ci-dessous :
+
+____________________________
+
+____________________________
+
+____________________________
+
+ENDROIT OÙ LES MARCHANDISES SERONT GARDÉES (nom et adresse de la personne-
+ressource)
+
+_______________________________________
+
+_______________________________________
+
+_______________________________________
+
+DATE DE RÉCEPTION EN BON ÉTAT DE FONCTIONNEMENT
+
+__________________________________________________
+
+---------------------------------------------------------------------------

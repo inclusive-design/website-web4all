@@ -1,0 +1,3 @@
+Welcome to FasseTrack Installation
+
+This version of FasseTrack is for evaluation only and will expire after 30 days. All temporary files created will be removed once the installation is complete.

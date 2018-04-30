@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.imsproject.org/xsd/ims_lip_rootv1p0"
+    xmlns:imslip="http://www.imsproject.org/xsd/ims_lip_rootv1p0"
+    version="1.0.0"
+    blockDefault="#all">
+    
+    <import namespace="http://www.w3.org/XML/1998/namespace" 
+        schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+
+    <annotation>
+        <documentation> 
+            Replication of LIP Metadata's 'contentype' element declaration 
+            conforming to http://www.w3.org/2001/XMLSchema.
+            
+            @author David Weinkauf
+        </documentation>
+    </annotation>
+
+    <!-- ********************************* -->		
+    <!-- ** ATTRIBUTEGROUP DECLARATIONS ** -->		
+    <!-- ********************************* -->
+
+    <attributeGroup name="attr.lang">
+        <attribute ref="xml:lang"/>
+    </attributeGroup>
+    <attributeGroup name="media.attr">
+        <attribute name="mediamode">
+            <simpleType>
+                <restriction base="string">
+                    <enumeration value="Text"/>
+                    <enumeration value="Image"/>
+                    <enumeration value="Video"/>
+                    <enumeration value="Audio"/>
+                    <enumeration value="Applet"/>
+                    <enumeration value="Application"/>
+                </restriction>
+            </simpleType>
+        </attribute>
+        <attribute name="mimetype" type="string"/>
+        <attribute name="encoding" default="Base-64">
+            <simpleType>
+                <restriction base="string">
+                    <enumeration value="uri"/>
+                    <enumeration value="Base-64"/>
+                </restriction>
+            </simpleType>
+        </attribute>
+    </attributeGroup>
+
+    <!-- ************************** -->
+    <!-- ** ELEMENT DECLARATIONS ** -->
+    <!-- ************************** -->
+
+    <element name="comment" type="imslip:commentType"/>
+    <element name="contentype" type="imslip:contentypeType"/>
+    <element name="date" type="imslip:dateType"/>
+    <element name="datetime" type="imslip:datetimeType"/>
+    <element name="description" type="imslip:descriptionType"/>
+    <element name="ext_contentype" type="imslip:extensionType"/>
+    <element name="ext_date" type="imslip:extensionType"/>
+    <element name="fielddata" type="imslip:fielddataType"/>
+    <element name="fieldlabel" type="imslip:fieldlabelType"/>
+    <element name="full" type="imslip:fullType"/>
+    <element name="id" type="imslip:idType"/>
+    <element name="indexid" type="imslip:indexidType"/>
+    <element name="long" type="imslip:longType"/>
+    <element name="media" type="imslip:mediaType"/>
+    <element name="privacy" type="imslip:privacyType"/>
+    <element name="privacyfield" type="imslip:datafieldType"/>
+    <element name="referential" type="imslip:referentialType"/>
+    <element name="short" type="imslip:shortType"/>
+    <element name="source" type="imslip:sourceType"/>
+    <element name="sourcedid" type="imslip:sourcedidType"/>
+    <element name="temporal" type="imslip:temporalType"/>
+    <element name="temporalfield" type="imslip:datafieldType"/>
+    <element name="typename" type="imslip:typenameType"/>
+    <element name="tysource" type="imslip:tysourceType"/>
+    <element name="tyvalue" type="imslip:tyvalueType"/>
+
+    <!-- ******************* -->		
+    <!-- ** COMPLEX TYPES ** -->		
+    <!-- ******************* -->
+    
+    <complexType name="commentType">
+        <simpleContent>
+            <extension base="string">
+                <attributeGroup ref="imslip:attr.lang"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+    <complexType name="contentypeType">
+        <sequence>
+            <element ref="imslip:comment" minOccurs="0"/>
+            <choice maxOccurs="unbounded">
+                <element ref="imslip:referential"/>
+                <element ref="imslip:temporal"/>
+                <element ref="imslip:privacy"/>
+            </choice>
+            <element ref="imslip:ext_contentype" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="datafieldType">
+        <sequence>
+            <element ref="imslip:fieldlabel"/>
+            <element ref="imslip:fielddata"/>
+        </sequence>
+    </complexType>
+    <complexType name="dateType">
+        <sequence>
+            <element ref="imslip:typename" minOccurs="0"/>
+            <element ref="imslip:datetime"/>
+            <element ref="imslip:description" minOccurs="0"/>
+            <element ref="imslip:ext_date" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="datetimeType">
+        <simpleContent>
+            <extension base="date"/>
+        </simpleContent>
+    </complexType>
+    <complexType name="descriptionType">
+        <choice maxOccurs="unbounded">
+            <element ref="imslip:short"/>
+            <element ref="imslip:long"/>
+            <element ref="imslip:full"/>
+        </choice>
+    </complexType>
+    <complexType name="extensionType">
+        <sequence>
+            <any namespace="##any"/>
+        </sequence>
+    </complexType>
+    <complexType name="fieldlabelType">
+        <sequence>
+            <element ref="imslip:typename" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="fullType">
+        <sequence>
+            <element ref="imslip:comment" minOccurs="0"/>
+            <element ref="imslip:media" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="idType">
+        <simpleContent>
+            <extension base="string"/>
+        </simpleContent>
+    </complexType>
+    <complexType name="longType">
+        <simpleContent>
+            <extension base="string">
+                <attributeGroup ref="imslip:attr.lang"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+    <complexType name="mediaType">
+        <simpleContent>
+            <extension base="string">
+                <attributeGroup ref="imslip:media.attr"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+    <complexType name="privacyType">
+        <sequence>
+            <element ref="imslip:typename" minOccurs="0"/>
+            <element ref="imslip:privacyfield" maxOccurs="unbounded"/>
+            <element ref="imslip:date" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="referentialType">
+        <choice>
+            <element ref="imslip:sourcedid"/>
+            <element ref="imslip:indexid"/>
+            <sequence>
+                <element ref="imslip:sourcedid"/>
+                <element ref="imslip:indexid"/>
+            </sequence>
+        </choice>
+    </complexType>
+    <complexType name="shortType">
+        <simpleContent>
+            <extension base="string">
+                <attributeGroup ref="imslip:attr.lang"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+    <complexType name="sourcedidType">
+        <sequence>
+            <element ref="imslip:source"/>
+            <element ref="imslip:id"/>
+        </sequence>
+    </complexType>
+    <complexType name="sourceType">
+        <simpleContent>
+            <extension base="string"/>
+        </simpleContent>
+    </complexType>
+    <complexType name="temporalType">
+        <sequence>
+            <element ref="imslip:typename"/>
+            <element ref="imslip:temporalfield" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="typenameType">
+        <sequence>
+            <element ref="imslip:tysource" minOccurs="0"/>
+            <element ref="imslip:tyvalue"/>
+        </sequence>
+    </complexType>
+    <complexType name="tysourceType">
+        <simpleContent>
+            <extension base="string">
+                <attribute name="sourcetype" default="imsdefault">
+                    <simpleType>
+                        <restriction base="string">
+                            <enumeration value="imsdefault"/>
+                            <enumeration value="list"/>
+                            <enumeration value="proprietary"/>
+                            <enumeration value="standard"/>
+                        </restriction>
+                    </simpleType>
+                </attribute>
+                <attributeGroup ref="imslip:attr.lang"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+    <complexType name="tyvalueType">
+        <simpleContent>
+            <extension base="string">
+                <attributeGroup ref="imslip:attr.lang"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+
+    <!-- ****************** -->
+    <!-- ** SIMPLE TYPES ** -->
+    <!-- ****************** -->
+    
+    <simpleType name="fielddataType">
+        <restriction base="string"/>
+    </simpleType>
+    <simpleType name="indexidType">
+        <restriction base="string"/>
+    </simpleType>
+
+</schema>

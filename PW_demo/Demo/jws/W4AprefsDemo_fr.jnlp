@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    
+    Copyright © 2005, ATRC, University of Toronto.  All rights reserved.
+    File:       W4AprefsDemo_fr.jnlp.
+    Synopsis:   Java Web Start JNLP file for Web-4-All Preference Demo
+                (French).
+    @author Joseph Scheuhammer
+-->
+<jnlp
+  spec="1.0+"
+  codebase="http://web4all.atrc.utoronto.ca/PW_demo/Demo/jws"
+  href="W4AprefsDemo_fr.jnlp">
+  <information>
+    <title>Le Web pour tous</title>
+    <vendor>Adaptive Technology Resource Centre, University of Toronto</vendor>
+    <homepage href="http://web4all.atrc.utoronto.ca"/>
+    <description>R\u00e9dacteur Conforme D'AccLIP</description>
+    <description kind="short">Le Web pour tous Assistant des pr\u00e9f\u00e9rences D\u00e9mo</description>
+    <icon href="web4all_logo.gif" height="50" width="50"/>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.4+"/>
+    <jar href="Web4AllJWSPrefsDemo.jar"/>
+    <jar href="xalan.jar"/>
+    <jar href="regexp.jar"/>
+    <jar href="xercesImpl.jar"/>
+    <jar href="xml-apis.jar"/>
+    <jar href="xmlParserAPIs.jar"/>
+  </resources>
+  <application-desc main-class="ca.utoronto.atrc.web4all.Web4All"/>
+</jnlp> 

@@ -1,0 +1,1597 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head>
+  
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+  <title>How to Write a Configuration Plug-in</title>
+
+  
+  
+  <link rel="stylesheet" type="text/css" href="main.css">
+<!--
+    $Log: ConfigurationPlugin.html,v $
+    Revision 1.11  2003/07/28 15:00:54  clown
+    Added latest version of Web4AllConstants.java to the appendix.
+
+    Revision 1.10  2003/03/27 18:42:27  clown
+    Put links to WinExec docs back in.
+
+    Revision 1.9  2003/03/26 22:22:33  clown
+    Fixed broken links.
+
+    Revision 1.8  2003/03/26 21:08:09  clown
+    Removed header and link to windows executable 'man' pages.
+
+    Revision 1.7  2003/03/25 22:04:49  clown
+    Put latest Web4AllConstants.java into the appendix.
+
+    Revision 1.6  2003/03/24 05:31:45  clown
+    Incorporated Bruce's edits.
+
+    Revision 1.5  2003/03/19 03:36:29  clown
+    Removed mention of application version.  Fixed some "back to top" broken
+    links.
+
+    Revision 1.4  2003/03/10 17:35:04  clown
+    Merged my edits with Anastasia's.
+
+
+--></head><body>
+<div class="blockCentre">
+<h1>How to Write a Configuration Plug-in<br>
+</h1>
+<p style="font-style: italic;">Joseph Scheuhammer<br>
+Adaptive Technology Resource Centre, University of Toronto<br>
+February 13, 2003 </p>
+</div>
+
+<h2><a name="Table_of_Contents"></a>Table of Contents</h2>
+
+<ul>
+
+  <li><a href="#Introduction">Introduction</a></li>
+  <li><a href="#Plug-in_Declaration_">Plug-in Declaration<br>
+    </a></li>
+  <ul>
+    <li><a href="#Plug-in_Information_">Plug-in Information</a></li>
+    <ul>
+      <li><a href="#Core_Properties_">Core Properties</a></li>
+      <li><a href="#Local_Properties">Local Properities</a></li>
+    </ul>
+  </ul>
+  <li><a href="#Plug-in_API">Configuration Plug-in API</a></li>
+  <ul>
+    <li><a href="#public_interface_SetterLauncher_">public interface
+SetterLauncher</a></li>
+    <li><a href="#class_AccLipInfoPackage">public class
+AccLipInfoPackage</a></li>
+    <li><a href="#Multi-type_Adaptive_Technology_"> Multi-type Adaptive
+Technology</a></li>
+  </ul>
+  <li><a href="#Location_of_Code_and_Data"> Location of Code and Data</a></li>
+  <li><a href="#Summary">Summary</a><br>
+  </li>
+  <li><a href="#Appendix_A:_Application_Types">Appendix A: Technology
+Types</a><br>
+  </li>
+</ul>
+
+<h2><a name="Introduction"></a>Introduction</h2>
+
+<p>This document describes the requirements necessary for the
+Configuration Manager to find, load, and activate a configuration
+plug-in.&nbsp; In addition, this describes how to implement the
+configuration plug-in itself in terms of the information passed to it,
+where the plug-in can acquire other relevant information, and how it is
+to function.&nbsp; Three sources provide all the information that is
+necessary for a configuration plug-in to perform its job.&nbsp; They
+include a file declaring the properties of the plug-in, the plug-in code
+itself, and information about the preferences passed to the plug-in.<br>
+</p>
+
+<h2><a name="Plug-in_Declaration_"></a>Plug-in Declaration<br>
+</h2>
+
+<p>A two-stage process is used to load and invoke a configuration
+plug-in.&nbsp; In the first stage, the Control Hub loads information
+about all the available plug-ins.&nbsp; The second stage occurs when the
+Configuration Manager processes the ACCLIP, and attempts to match user's
+preferences to the appropriate plug-in.&nbsp; This section describes the
+mechanisms used by the Control Hub and the Configuration Manager to
+accomplish these tasks.<br>
+</p>
+
+<h3><a name="Plug-in_Information_"></a>Plug-in Information<br>
+</h3>
+
+<p>The Control Hub determines the available plug-ins when the Web-4-All
+system first starts up.&nbsp; This one-time registration process detects
+and records all available plug-ins for later use.</p>
+
+<p>Information about individual plug-ins is stored in a <code>java.util.PropertyResourceBundle</code>
+instance.&nbsp; The resource bundle is created from a ".properties" file
+on disk.&nbsp; There are two sets of properties within the file: a core
+set and a local set.&nbsp; The former is a standard obligatory set of
+properties used by the Configuration Manager.&nbsp; The latter is a set
+of properties that the third party vendor may wish to declare and use
+within their plug-in.&nbsp; There is no restriction on the format of the
+local set of properites.&nbsp; They are completely optional.&nbsp; The
+next section describes the structure of the core properties using an
+example based on a fictitious adaptive technology called "EpiScreen".<br>
+</p>
+
+<p><a href="#Table_of_Contents">back to top</a> </p>
+
+<h4><a name="Core_Properties_"></a>Core Properties<br>
+</h4>
+
+<p>The first property declared in the file is an ID that uniquely
+identifies the third party technology associated with the plug-in.&nbsp;
+The name of the property is "appID".&nbsp; One constraint on the appID
+value is that it must match an associated identifier given in the
+ACCLIP.&nbsp; Specifically, the ACCLIP defines an element named <code>&lt;application&gt;</code>
+that has an <code>name</code> attribute.&nbsp; That name is used by the
+Configuration Manager to match the <code>&lt;application&gt;</code>
+element to the configuration plug-in, via its "appID" property.&nbsp;
+Consider, for example,&nbsp; this fragment of an ACCLIP, in which the
+user has declared their screen reader preferences, and selected
+"EpiScreen" as their screen reader:<br>
+</p>
+
+<blockquote>
+  <pre>...<br>&lt;screenReader&gt;<br>    &lt;screenReaderGeneric&gt;<br>        ...			&lt;!-- Generic preferences here --&gt;<br>    &lt;/screenReaderGeneric&gt;<br>    &lt;application name="EpiScreen" priority="1"/&gt;<br>&lt;/screenReader&gt;<br>...<br></pre>
+</blockquote>
+
+<p>The Configuration Manager matches the user's preferences with the
+appropriate third party software (in this instance, the EpiScreen
+application) using the plug-in's "appID" property.&nbsp; It must be set
+to the same name in the "Episcreen.properties" file:<br>
+</p>
+
+<blockquote>
+  <pre>appID=EpiScreen<br></pre>
+</blockquote>
+
+<p>The "appID" property acts as a key that the Configuration Manager
+can use to ask the Control Hub for information about that technology.<br>
+</p>
+
+<p>The next property, "appType", declares the type of adaptive
+technology.&nbsp; The technology classification is taken from the ACCLIP
+and includes types such as screen readers, onscreen keyboards, voice
+recognition, and so on.&nbsp; Any given technology could, in theory, be
+described as multiple types of technology.&nbsp; For example the GNOME
+screen reader "Gnopernicus" is both a screen reader and a screen
+magnifier.&nbsp; To handle the possibility of multi-type technologies,
+the "appType" property can be written as a comma separated list of
+technology types.&nbsp; If the technology is properly described as just
+a single type, then only that type is entered:<br>
+</p>
+
+<blockquote>
+  <pre>appType=screen.reader   		# means: EpiScreen is just a screen reader.<br></pre>
+vs.<br>
+  <pre>appType=screen.reader,screen.enhance    # means: EpiScreen is a screen reader and a screen enhancer.<br></pre>
+</blockquote>
+
+<p>In addition to declaring an application as a specific type of
+adaptive technology, the "appType" property can be used as a key to
+discover if a particular technology type is available on a
+workstation.&nbsp; The Control Hub stores the information in the
+properties files in such a way that, given an "appType", it will provide
+a list of all "appID"s matching that technology type.&nbsp; Thus, if
+there is more that one screen reader available, by asking for all the
+technologies of "appType" <code>screen.reader</code>, the ControlHub
+will respond with a list of all matching appIDs.&nbsp; That list could
+consist of "EpiScreen", "HomePageReader", "JAWS", and/or "Gnopernicus",
+depending on what has been installed on the workstation. &nbsp;<br>
+</p>
+
+<p>The legal values for the "appType" property are defined by the
+ACCLIP, and are given in the <code>ca.utoronto.atrc.web4all.Web4AllConstants</code>&nbsp;
+java interface.&nbsp; They are repeated in <a href="#Appendix_A:_Application_Types">Appendix A</a> of this document.<br>
+</p>
+
+<p>The remaining core properties are all prefixed with the value of the
+"appID" property such as the string "EpiScreen" apperaing in the current
+example.&nbsp; There are two properties that name the Java<span class="trademark">TM</span> classes to use for the
+preferences wizard plug-in and configuration plug-in.&nbsp; They are
+named "prefs" and "config", respectively.&nbsp; The first of these is
+optional, while the latter is mandatory.&nbsp; In both cases, the name
+is the fully qualified Java<span class="trademark">TM</span>
+class name.&nbsp; For the EpiScreen example, assume that there is no
+preferences wizard plug-in.&nbsp; Then, these properties would appear in
+the "EpiScreen.properties" file:<br>
+</p>
+
+<blockquote>
+  <pre>Episcreen.prefs=<br>Episcreen.config=com.epicorp.episcreen.EpiScreenSettings</pre>
+</blockquote>
+
+<p>This declares that the EpiScreen screen reader/screen enhancer has
+no preferences wizard plug-in, and that its configuration plug-in is the
+class <code>com.epicorp.episcreen.EpiScreenSettings</code>.<br>
+</p>
+
+<hr>
+<p>Note: with respect to the core properties, "optional" means that the
+property must be declared, but need not have a value.&nbsp; For example:<br>
+</p>
+
+<blockquote>
+  <pre>Episcreen.prefs=		# no value specified for 'Episcreen.prefs'.</pre>
+</blockquote>
+
+<hr>
+<p>The Web-4-All system needs to determine if the third party software
+is actually present on the workstation.&nbsp; For example, the
+Preferences Wizard Manager will announce, in one of its dialogs, whether
+the technology is present and the Configuration Manager will ignore
+plug-ins for all third party technologies that are not available.&nbsp;
+The availability of the technology is determined via the "exec"
+property, which defines a path to an executable. For example: <br>
+</p>
+
+<blockquote>
+  <pre>Episcreen.exec=C:\\Program Files\\EpiCorp\\Episcreen.exe</pre>
+</blockquote>
+
+<p>The path can be a full path, as in the example above, or a relative
+path.&nbsp; If relative, then it must be relative to the directory from
+which the Web-4-All system was launched.&nbsp; This is a property of the
+Control Hub and can be acquired via its <code>getHomeDirectory()</code>
+method.&nbsp; <br>
+</p>
+
+<p>Applications frequently consult an initialization file that contains
+all of their settings.&nbsp; On Windows, these take the form of a text
+file with the extension ".ini".&nbsp; There is an optional core property
+for plug-ins that specifies the location of the relevant initialization
+file.&nbsp; Like the "exec" property, the location is given as either a
+full path to the file, or a path relative to the home directory of the
+Web-4-All system.&nbsp; For example:<br>
+</p>
+
+<blockquote>
+  <pre>Episcreen.ini=3rd_party\\EpiScreen\\EpiScreen.ini</pre>
+</blockquote>
+
+<p>The above says that EpiScreen's initialization file is found in the
+directory tree rooted at the "3rd_party" directory, which is immediately
+inside Web-4-All's home directory.&nbsp; The "ini" property is optional,
+since not all technologies use such a file for their settings.<br>
+</p>
+
+<p>The final core property is for use within the user interface.&nbsp;
+The "product.name" property is the name of the product that users would
+recognize.&nbsp; It is a required property:<br>
+</p>
+
+<blockquote>
+  <pre>Episcreen.product.name=EpiScreen Reader-Enhancer</pre>
+</blockquote>
+
+<p>To summarize, the core properties that must be declared for a
+plug-in are:<br>
+</p>
+
+<ul>
+
+  <li>a unique ID that matches the application name from the ACCLIP
+(required).</li>
+  <li>a description of the type of adaptive technology (required).</li>
+  <li>the fully qualified Java class name of the object to use as the
+preferences plug-in (optional).</li>
+  <li>the fully qualified Java class name of the object to use as the
+configuration plug-in (required).</li>
+  <li>the full or relative path to the executable (required).</li>
+  <li>the full or relative path to the ".ini" or similar file to write
+settings into (optional).</li>
+  <li>a user friendly string that names the product (required).<br>
+  </li>
+</ul>
+
+<p>Here is the example core properties for the EpiScreen application in
+its entirety:<br>
+</p>
+
+<blockquote>
+  <pre># Core properties<br><br>appID=Episcreen<br>appType=screen.reader,screen.enchance<br>Episcreen.prefs=<br>Episcreen.config=com.epicorp.episcreen.EpiScreenSettings<br>Episcreen.exec=C:\\Program Files\\EpiCorp\\Episcreen.exe<br>Episcreen.ini=3rd_party\\EpiScreen\\EpiScreen.ini<br>Episcreen.product.name=EpiScreen Reader-Enhancer<br></pre>
+</blockquote>
+
+<p><a href="#Table_of_Contents">back to top</a> </p>
+
+<h4><a name="Local_Properties"></a>Local Properties<br>
+</h4>
+
+<p>The core properties are what are needed by the Web-4-All system to
+configure the worstation for a third party technology.&nbsp; However,
+the plug-in for that technology may need access to more information than
+is provided by the core.&nbsp; There is provision within the system to
+allow any number of other properties to be declared and stored in the
+plug-in's property file.&nbsp; These are termed "local"
+properties.&nbsp; There is no restriction on them, other than they must
+follow the constraints of a Java<span class="trademark">TM</span>
+properties file, and can be loaded into a <code>java.util.PropertiesResourceBundle</code>.<br>
+</p>
+
+<p>The local properties could declare other other types of variables,
+values for those variables, other executables that the plug-in may wish
+to execute, or even the location of images and sounds.&nbsp; For
+example, Episcreen may use some of the values from its ".ini" file to
+set some Windows registry settings.&nbsp; The following three example
+properties declare registry keys for some ".ini" entries and the path to
+a command line executable that will set the proper registry settings:<br>
+</p>
+
+<blockquote>
+  <pre># Local properties<br><br>registrykey.int=[Software\\EpiCorp\\EpiScreen\\Settings\\INT]<br>registrykey.string=[Software\\EpiCorp\\EpiScreen\\Settings\\STRING]<br>registry.exec=3rd_party\\RegistryConsole\\RegistryConsole.exe<br><br></pre>
+</blockquote>
+
+<p>Because someone familiar with the application has implemented it,
+the Episcreen configuration plug-in can use this information to
+correctly set relevant registry entries.</p>
+
+<hr style="width: 100%; height: 2px;">
+<p>Note:&nbsp; the command line executable "<a href="WinExecs/RegistryConsole.html" title="RegistryConsole">RegistryConsole.exe</a>" is included in the Web-4-All package for any plug-in to use.&nbsp; It is documented in the "<a href="WinExecs/index.html" title="Windows Command Line Executables">Windows Command Line Exectuables</a>" document.</p>
+
+<hr style="width: 100%; height: 2px;">
+<p>Access to these local properties is provided through the Control
+Hub, and the configuration plug-in itself.&nbsp; The latter is
+accomplished by implementing the configuration plug-in API.&nbsp; Having
+described how properties of the plug-in are declared, the next section
+describes the plug-in API itself and explains what is involved in
+implementing a plug-in that configures and launches a third party
+technology. <br>
+</p>
+
+<p><a href="#Table_of_Contents">back to top</a> </p>
+
+<h2><a name="Plug-in_API"></a>Configuration Plug-in API</h2>
+
+<h3><a name="public_interface_SetterLauncher_"></a>public interface
+SetterLauncher<br>
+</h3>
+
+<p>Configuration plug-ins must implement a common API in order to
+qualify as a plug-in.&nbsp; The API is made up of a number of Java<span class="trademark">TM</span>&nbsp; interfaces and classes.&nbsp; The
+central API is the&nbsp; interface <code>ca.utoronto.atrc.web4all.configuration.SetterLauncher</code>.&nbsp;
+This section declares the methods of <code>SetterLauncher</code> and
+describes their intent.&nbsp; The methods of <code>SetterLauncher</code>
+are described in the order that the Configuration Manager calls them; in
+brief, the technique employed by the Configuration Manager is:<br>
+</p>
+
+<ol>
+
+  <li>Apply the ACCLIP preferences the user has chosen.</li>
+  <li>Launch the adaptive technology.</li>
+  <li>Reset the adaptive technology, and exit it.</li>
+</ol>
+
+<h3>doSettings()</h3>
+
+<dl>
+<dt><code>public boolean doSettings (Vector inAccLipInfoPackages,
+Web4All inConfigInfo);</code></dt><dd>This method is called to do whatever is necessary to take the
+settings in the ACCLIP document, and apply them to the adaptive
+technology. This includes writing a ".ini" file, or setting registry
+values, for example. Argument meanings are as follows:
+    <dl><dt><code>Vector inAccLipInfoPackages</code></dt><dd>A Vector of <code>ca.utoronto.atrc.web4all.configuration.AccLipInfoPackage</code>
+instances. Each instance references a specific type of technology (e.g.,
+a screen reader) and that technology's generic and specific container
+elements. The methods of <code>AccLipInfoPackage</code> are described
+more fully in the next section, "<a href="#class_AccLipInfoPackage"><code>public
+class AccLipInfoPackage</code></a>".</dd><dt><code>inControlHub</code></dt><dd>The Control Hub: it provides access to information such as
+the location of a relevant ".ini" file, or the path to the application.</dd><dt>Return value:</dt><dd>A boolean to indicate whether the plug-in intends to launch a
+Web browser. For example, the <code>SetterLauncher</code> for Home Page
+Reader should return true since Home Page Reader is a browser.&nbsp;
+However, the <code>SetterLauncher</code> for configuring the keyboard
+(e.g., sticky keys) does not, in fact, launch a browser. The
+Configuration Manager needs to know if one of its <code>SetterLauncher</code>'s
+does launch a browser.&nbsp; If none do, it must launch one.&nbsp; This
+is because Web-4-All requires that at least one Web browser to be
+launched once the workstation is configured.<br>
+      </dd></dl>
+  </dd>
+</dl>
+
+<h3>doLaunch()<br>
+</h3>
+
+<dl>
+<dt><code>public void doLaunch();</code></dt><dd>This method is called to launch the adaptive technology.&nbsp; By
+the time this is called, all the configuration information should have
+been properly extracted from the user preferences and "installed" -- see <code>doSettings()</code>
+above.<br>
+  </dd>
+</dl>
+
+<h3>kill()</h3>
+
+<dl>
+<dt><code>public void kill();</code></dt><dd>This method is called to shut down the process launched by <code>doLaunch()</code>.&nbsp;
+In addition, this should undo any configuration done by <code>doSettings()</code>
+ensuring that the third party technology is left in a standard, default
+state.<br>
+  </dd>
+</dl>
+
+<h3>initLocalProps()</h3>
+
+<dl>
+<dt><code>public boolean initLocalProps();</code></dt><dd>This method is called to acquire the set of local properties as
+given in the plug-in ".properties" file as described above in the "<a href="#Local_Properties">Local Properties</a>" section. &nbsp; The
+return value is a boolean that indicates whether the properites were
+found.<br>
+  </dd>
+</dl>
+
+<p><a href="#Table_of_Contents">back to top</a> </p>
+
+<h3><a name="class_AccLipInfoPackage"></a>class AccLipInfoPackage</h3>
+
+<p>Instances of the <code>AccLipInfoPackage</code> class are created by
+the Configuration Manager based on the information it finds in the
+plug-in properties files.&nbsp; When the Configuration Manager finds a
+match between the ACCLIP preferences and a plug-in, it instantiates the
+plug-in, and passes it the relevant parts of the ACCLIP.&nbsp; The
+technique for passing the ACCLIP information is via an <code>AccLipInfoPackage</code>
+instance.&nbsp; The following describes the methods of <code>class
+AccLipInfoPackage</code>.<br>
+</p>
+
+<h3>getAppType() </h3>
+
+<dl>
+<dt><code>public String getAppType()</code></dt><dd>This method returns the application type as a String.&nbsp; This
+is one of the types defined in the ACCLIP schema.<br>
+  </dd>
+</dl>
+
+<h3>getGenericPrefs() </h3>
+
+<dl>
+<dt><code>public Element getGenericPrefs()</code></dt><dd>Retrieve the Element, from the ACCLIP document, that represents
+the generic preferences for the technology.&nbsp; The return value is of
+type <code>org.w3c.dom.Element</code>.</dd>
+</dl>
+
+<h3>getSpecificPrefs() </h3>
+
+<dl>
+<dt><code>public Element getSpecificPrefs()</code></dt><dd>Retrieve the Element, from the ACCLIP document, that represents
+the third party application<code></code> specific preferences.&nbsp; The
+return value is of type <code>org.w3c.dom.Element</code>, which is the <code>&lt;application&gt;</code>
+element itself.&nbsp; It may or may not contain a set of <code>&lt;param&gt;</code>elements
+that define the technology-specific preferences.<br>
+  </dd>
+</dl>
+
+<h3><a name="Multi-type_Adaptive_Technology_"></a>Multi-type Adaptive
+Technology<br>
+</h3>
+
+<p>A warning about how plug-ins should be implemented:&nbsp; The
+plug-in should configure its associated third party technology only for
+the type indicated by the corresponding <code>AccLipInfoPackage</code>.&nbsp;
+For example, EpiScreen is declared in its properties file as both a
+screen reader and a screen enhancer.&nbsp; However, if its configuration
+plug-in is given only an <code>AccLipInfoPackage</code> instance whose
+application type is "screenEnhancer", then the plug-in should configure
+only the screen enhancement aspect of EpiScreen.&nbsp; The reason for
+this is because the user may have chosen another technology to use as
+their screen reader, and if both EpiScreen and that other screen reader
+are launched as screen readers, the user experience may be
+confusing.&nbsp; Worse, the two competing speech synthesizers could lead
+to system crash.<br>
+</p>
+
+<p>This raises the question of how the system behaves when the user has
+chosen EpiScreen for both its screen reader and screen enhancing
+capabilities.&nbsp; Recall that the <code>doSettings()</code> method of
+the plug-in is passed a list of <code>AccLipInfoPackage</code>s.&nbsp;
+If the user has chosen EpiScreen for both of its functions, then there
+will be two instances of&nbsp; <code>AccLipInfoPackage</code> - one
+whose application type is screen reader, and the other, screen
+enhancement.&nbsp;&nbsp; EpiScreen's plug-in should check the entire
+list to see if both application types are desired of EpiScreen.<br>
+</p>
+
+<p><a href="#Table_of_Contents">back to top</a> </p>
+
+<h2><a name="Location_of_Code_and_Data"></a>Location of Code and Data<br>
+</h2>
+
+<p>Given that a developer has implemented the plug-in API, and defined
+the plug-in's properties, the question arises as to where this data and
+code should be located.&nbsp; Web-4-All assumes a specific directory
+structure, namely, that there is a sub-directory named "3rd_party" in
+the same location as the Web-4-All exectuable. The Control Hub expects a
+plug-in properties file to be located in this sub-directory.&nbsp; The
+plug-in loader requires that the plug-ins be in the class path; however,
+Web-4-All searches the "3rd_party" folder for ".jar" files.&nbsp; As
+such, implementors can avoid class path issues by placing their plug-in
+code in a jar, and then put that jar in the "3rd_party" directory.</p>
+
+<h2><a name="Summary"></a>Summary<br>
+</h2>
+
+<p>This document has described the essentials of creating a
+configuration plug-in for the Web-4-All system.&nbsp; If the properties
+file and <code>SetterLauncher</code> are implemented and located
+properly within the file system, then the Configuration Manager will
+find the plug-in and call upon it to configure the relevant third party
+technology.<br>
+</p>
+
+<p>There are a number of tasks that are common among <code>SetterLauncher</code>s.&nbsp;
+In recognition of this, the configuration package that ships with
+Web-4-All includes utility classes and code designed to simplify the
+task of implementing a plug-in.&nbsp; The document "<a href="ConfigUtils.html" title="Configuration Plug-in Utilities">Configuration
+Plug-in Utilities</a>" describes these utilities and suggests ways that
+they could be used.<br>
+</p>
+
+<p><a href="#Table_of_Contents">back to top</a> </p>
+
+<h2><a name="Appendix_A:_Application_Types"></a>Appendix A: Technology
+Types</h2>
+
+<p>The interface <code>ca.utoronto.atrc.web4all.Web4AllConstants</code>
+lists the legitimate values of the "appType" plug-in property:<br>
+</p>
+
+<code>/*[<br>
+&nbsp;* Copyright &copy; 2001-2003, ATRC, University of Toronto.&nbsp; All rights reserved.<br>
+&nbsp;* <br>
+&nbsp;* File:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Web4AllConstants.java<br>
+&nbsp;*<br>
+&nbsp;* Synoposis:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; package ca.utoronto.atrc.web4all;<br>
+&nbsp;* <br>
+]*/<br>
+<br>
+package ca.utoronto.atrc.web4all;<br>
+<br>
+/**<br>
+&nbsp;* Top-level constants used in the Web-4-All system. One group of constants defines keys<br>
+&nbsp;* for looking up properties in plug-in .properties files.&nbsp; The other group defines keys<br>
+&nbsp;* for looking up the name of an ACCLIP element or attribute.<br>
+&nbsp;*<br>
+&nbsp;* @version $Id: ConfigurationPlugin.html,v 1.11 2003/07/28 15:00:54 clown Exp $<br>
+&nbsp;* @author&nbsp; Joseph Scheuhammer.<br>
+&nbsp;*/<br>
+public interface Web4AllConstants<br>
+{<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * The name of the preferences DTD file.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String
+PREFS_DTD_NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "prefs.DTD";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Third party application name property key.&nbsp; This is used in the plug-in's<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * .properties file.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;
+public final static String
+APP_ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "appID";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /** <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * The application type property.&nbsp; This is used in the plug-in's<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * .properties file.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String
+APP_TYPE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "appType";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /** <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Suffix for the preferences wizard class property.&nbsp; This is used in the plug-in's<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * .properties file.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String
+PREFS_CLASS_SUFFIX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= ".prefs";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /** <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Suffix for the configuration class property.&nbsp; This is used in the plug-in's<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * .properties file.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String
+CONFIG_CLASS_SUFFIX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= ".config";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /** <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Suffix for the application path property.&nbsp; This is used in the plug-in's<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * .properties file.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String
+EXEC_SUFFIX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= ".exec";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /** <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Suffix for the ".ini" path property.&nbsp; This is used in the plug-in's<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * .properties file.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String
+INI_SUFFIX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= ".ini";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /** <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Suffix for the full product name property.&nbsp; This is used in the plug-in's<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * .properties file.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String
+PRODUCT_NAME_SUFFIX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= ".product.name";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Root element key for the preferences (XML) element.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+ROOT_DATUM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "root.element";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Language attribute key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+PREF_LANG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "root.lang";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Context element key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+CONTEXT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "context";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Context identifier attribute key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+CONTEXT_ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "context.id";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Display element key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+DISPLAY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "display";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Control element key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+CONTROL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "control";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * For the generic preferences, this is the key for their value attribute.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+VAL_ATT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "value.attribute";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Key for alphabetic layout of onscreen or alternative keyboards.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+ALPHA_LAYOUT_INTERNAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"alpha.layout.internal";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Key for alphabetic layout of onscreen or alternative keyboards.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+ALPHA_LAYOUT_EXTERNAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"alpha.layout.external";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen reader preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SCREEN_READER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "screen.reader";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen reader generic preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SR_GENERIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "sr.generic";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen reader.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SR_GENERIC_LINK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "sr.generic.link";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen reader.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SR_GENERIC_SPEECH_RATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"sr.generic.speech.rate";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen reader.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SR_GENERIC_PITCH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "sr.generic.pitch";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen reader.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SR_GENERIC_VOLUME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "sr.generic.volume";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard preference key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+ONSCREEN_KEYBOARD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "onscreen.keyboard";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard generic preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_LAYOUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.layout";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_KEY_WIDTH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.key.width";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_KEY_HEIGHT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.key.height";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_KEY_SPACING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.key.spacing";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_KEY_SOUND&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.key.sound";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_POINT_CLICK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.point.click";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_POINT_DWELL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.point.dwell";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_AUTO_SCAN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.auto.scan";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_INVERSE_SCAN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.inverse.scan";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_DIRECTED_SCAN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.directed.scan";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_CODE_SELECTION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.code.selection";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_SWITCH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.switch";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_SWITCH_NUM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.switch.num";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_SWITCH_DELAY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.switch.delay";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_DWELL_TIME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.dwell.time";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_SCAN_SPEED&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.scan.speed";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_AUTO_SCAN_INIT_DELAY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "ok.generic.auto.scan.init.delay";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_SCAN_SWITCH_DELAY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.scan.switch.delay";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_AUTO_SCAN_REPEAT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.auto.scan.repeat";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Onscreen keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+OK_GENERIC_SWITCH_TYPE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ok.generic.switch.type";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement preferences key,<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SCREEN_ENHANCE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "screen.enhance";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement generic preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "se.generic";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_FONT_FACE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "se.generic.font.face";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_GENERIC_FACE&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"se.generic.generic.face";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_FONT_SIZE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "se.generic.font.size";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_INVERT_COLOURS&nbsp;&nbsp; =&nbsp;&nbsp;
+"se.generic.invert.colours";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_FG_COLOUR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "se.generic.fg.colour";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_BG_COLOUR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "se.generic.bg.colour";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_HI_COLOUR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "se.generic.hi.colour";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_CURSOR_SIZE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"se.generic.cursor.size";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_CURSOR_COLOUR&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"se.generic.cursor.colour";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_CURSOR_TRAILS&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"se.generic.cursor.trails";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_TRACKING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "se.generic.tracking";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_MOUSE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "se.generic.mouse";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_CARET&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "se.generic.caret";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_FOCUS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "se.generic.focus";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Screen enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+SE_GENERIC_MAGNIFICATION&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"se.generic.magnification";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Alternative pointing device preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+ALT_POINTING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "alt.pointing";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Alternative pointing device generic preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+AP_GENERIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ap.generic";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Alternative pointing device.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+AP_GENERIC_ABS_POINT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+"ap.generic.abs.pointing";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Alternative pointing device.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+AP_GENERIC_REL_POINT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+"ap.generic.rel.pointing";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Alternative pointing device.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+AP_GENERIC_SPEED&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ap.generic.speed";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Alternative pointing device.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+AP_GENERIC_ACCEL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ap.generic.accel";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Alternative pointing device.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+AP_GENERIC_HAND&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ap.generic.hand";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Alternative pointing device.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+AP_GENERIC_DBLCLICK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ap.generic.dblclick";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Alternative pointing device.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+AP_GENERIC_BUTTON_EXT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"ap.generic.button.external";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Text reading plus highlighting preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+TEXT_READING_HIGHLITE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"text.reading.highlight";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Text reading plus highlighting generic preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+TR_GENERIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "tr.generic";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Text reading plus highlighting.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+TR_GENERIC_SPEECH_RATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"tr.generic.speech.rate";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Text reading plus highlighting.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+TR_GENERIC_PITCH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "tr.generic.pitch";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Text reading plus highlighting.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+TR_GENERIC_VOLUME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "tr.generic.volume";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Text reading plus highlighting.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+TR_GENERIC_HIGHLITE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "tr.generic.highlight";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Text reading plus highlighting.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+TR_GENERIC_ALT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "tr.generic.alt";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Text reading plus highlighting.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+TR_GENERIC_TABBING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "tr.generic.tabbing";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Text reading plus highlighting.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+TR_GENERIC_READING_UNIT&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"tr.generic.reading.unit";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Keyboard enhancement preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+KEYBOARD_ENHANCED&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "keyboard.enhanced";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Keyboard enhancement generic preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+KE_GENERIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ke.generic";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Keyboard enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+KE_GENERIC_LAYOUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ke.generic.layout";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Keyboard enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+KE_GENERIC_STICKY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ke.generic.sticky";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Keyboard enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+KE_GENERIC_REPEAT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ke.generic.repeat";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Keyboard enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+KE_GENERIC_AUTO_DELAY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"ke.generic.auto.delay";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Keyboard enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+KE_GENERIC_AUTO_RATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ke.generic.auto.rate";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Keyboard enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+KE_GENERIC_SLOW&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ke.generic.slow";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Keyboard enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+KE_GENERIC_SLOW_INTERVAL&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"ke.generic.slow.interval";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Keyboard enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+KE_GENERIC_DEBOUNCE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ke.generic.debounce";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Keyboard enhancement.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp; KE_GENERIC_DEBOUNCE_INTERVAL=&nbsp;&nbsp; "ke.generic.debounce.interval";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Alternative keyboard preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+ALT_KEYBOARD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "alt.keyboard";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Alternative keyboard generic preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+AK_GENERIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ak.generic";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Alternative keyboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+AK_GENERIC_RESIZABLE_KEYS&nbsp;&nbsp; =&nbsp;&nbsp;
+"ak.generic.resizable.keys";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Mouse emulation preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+MOUSE_EMULATION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "mouse.emulation";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Mouse emulation generic preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+ME_GENERIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "me.generic";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Mouse emulation.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+ME_GENERIC_SPEED&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "me.generic.speed";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Mouse emulation.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+ME_GENERIC_ACCEL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "me.generic.accel";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Mouse emulation.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+ME_GENERIC_DEVICE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "me.generic.device";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Braille preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+BRAILLE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "braille";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Braille generic preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+BRL_GENERIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "brl.generic";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Braille.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+BRL_GENERIC_GRADE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "brl.generic.grade";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Braille.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+BRL_GENERIC_NUM_DOTS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "brl.generic.num.dots";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Braille.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+BRL_GENERIC_NUM_CELLS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"brl.generic.num.cells";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Braille.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp; BRL_GENERIC_MARK_HIGHLIGHT&nbsp; =&nbsp;&nbsp; "brl.generic.mark.highlight";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Braille.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+BRL_GENERIC_MARK_BOLD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"brl.generic.mark.bold";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Braille.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp; BRL_GENERIC_MARK_UNDERLINE&nbsp; =&nbsp;&nbsp; "brl.generic.mark.underline";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Braille.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+BRL_GENERIC_MARK_ITALIC&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"brl.generic.mark.italic";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Braille.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp; BRL_GENERIC_MARK_STRIKEOUT&nbsp; =&nbsp;&nbsp; "brl.generic.mark.strikeout";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Braille.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+BRL_GENERIC_MARK_COLOR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"brl.generic.mark.color";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Braille.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+BRL_GENERIC_DOT_PRESSURE&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"brl.generic.dot.pressure";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Braille.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+BRL_GENERIC_STATUS_CELL&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"brl.generic.status.cell";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Visual alert preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+VISUAL_ALERT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "visual.alert";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Visual alert generic preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+VA_GENERIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "va.generic";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Visual alert.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+VA_GENERIC_SYSTEM_SOUNDS&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"va.generic.system.sounds";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Visual alert.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+VA_GENERIC_CAPTIONS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "va.generic.captions";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Voice recognition preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+VOICE_REC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "voice.rec";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Voice recognition generic preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+VR_GENERIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "vr.generic";<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Voice recognition.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+VR_GENERIC_MIC_GAIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "vr.generic.mic.gain";<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Voice recognition.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp; VR_GENERIC_CONTROLS_WINDOW&nbsp; =&nbsp;&nbsp; "vr.generic.controls.window";<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Voice recognition.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+VR_GENERIC_DICTATION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "vr.generic.dictation";<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Voice recognition.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp; VR_GENERIC_VOICE_PROFILE_EXT=&nbsp;&nbsp; "vr.generic.voice.profile.ext";<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Voice recognition.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp; VR_GENERIC_COMMAND_CONTROL&nbsp; =&nbsp;&nbsp; "vr.generic.command.control";<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Voice recognition.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+VR_GENERIC_VOCABULARY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"vr.generic.vocabulary";<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Voice recognition.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+VR_GENERIC_FEEDBACK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "vr.generic.feedback";<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Voice recognition.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+VR_GENERIC_MOUSE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "vr.generic.mouse";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Coded input preferences key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+CODED_INPUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "coded.input";<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Coded input.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+CI_CODE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ci.code";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Coded input.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+CI_CODE_SWITCH_NUM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ci.code.switch.num";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Coded input.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+CI_CODE_TERM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ci.code.term";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Coded input.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+CI_CODE_RATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ci.code.rate";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Coded input.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+CI_CODE_SELECT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ci.code.select";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Coded input.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+CI_SWITCH_TYPE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ci.code.switch.type";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Coded input.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+CI_CODE_EXT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "ci.code.ext";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Prediction.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+PREDICTION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "prediction";<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Prediction.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+PREDICT_COMMAND&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "predict.command";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Prediction.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+PREDICT_WORD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "predict.word";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Prediction.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+PREDICT_WORD_COMPLETE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"predict.word.complete";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Prediction.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+PREDICT_NUM_CHOICES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "predict.num.choices";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Prediction.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+PREDICT_PERSONAL_LEXICON&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;
+"predict.personal.lexicon";<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Third party preferences element key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+APPLICATION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "application";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Third party preferences application name attribute key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+APP_NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "app.name";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Third party preferences application priority attribute key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+APP_PRIORITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "app.priority";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Third party preferences application version attribute key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+APP_VERSION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "app.version";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Third party preferences parameter element key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+PARAMETER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "parameter";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Third party preferences parameter name attribute key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+PARAM_NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "param.name";<br>
+<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Third party preferences parameter value attribute key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public final static String&nbsp;
+PARAM_VALUE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp;&nbsp; "param.value";<br>
+&nbsp;&nbsp;&nbsp; <br>
+}&nbsp;&nbsp; // end interface Web4AllConstants.<br>
+</code>
+<p><a href="#Table_of_Contents">back to top</a> </p>
+
+<hr>
+<p> Copyright &copy; 2003 Adaptive Technology Resource Centre,
+University of Toronto.<br>
+All rights reserved.<br>
+Last modified: July 28 2003, Joseph Scheuhammer. </p>
+
+</body></html>

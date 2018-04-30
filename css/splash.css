@@ -1,0 +1,132 @@
+/*
+ * Copyright (c) 2006 Adaptive Technology Resource Centre, University of Toronto.
+ * All Rights Reserved.
+ *
+ * File: splash.css
+ *
+ * Synopsis:  CSS styles for Web-4-All splash page.
+ *
+ * @author Joseph Scheuhammer.
+ */
+
+/*************************/
+/* SPLASH PAGE           */
+/*************************/
+
+/* These styles centre the entire page */
+body.splash {
+    margin: 8px 8px 8px 8px;
+}
+
+div.splash {
+    position: absolute;
+    background-color: #FFFFFF;
+    left: 50%;
+    width: 484px;
+    margin-left: -242px;
+}
+
+#h1EnglishSplash {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#h2EnglishSplash {
+    font-size: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#h1FrenchSplash {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    text-align: right;
+}
+
+#h2FrenchSplash {
+    font-size: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    text-align: right;
+}
+
+#w4alogo {
+    background-image: url(../images/W4A_logo_splash.png);
+    background-repeat: no-repeat;
+    height: 315;
+    width: 481;
+    font-size: 36pt;
+    font-weight: bold;
+    font-style: italic;
+}
+
+#w4alogoText {
+    margin-left: 0;
+	margin-top: 0;
+    margin-right: 8px;  /* stop clipping top right of letter (italic) */
+    padding-top: 115px;
+    text-align: right;
+    font-style: italic;
+}
+
+/*
+ * Horizontal layout for IMS and ATRC logos.  Put a
+ * small gap (4 pixels) left margin between logo and text.
+ */
+#IMS_ATRC_logos {
+    width: 484px;
+    margin-top: 1em;
+    font-size: 9pt;
+}
+
+div#IMS_ATRC_logos span {
+    margin-left: 4px;
+}
+
+/*
+ * Float the IMS logo (img) left, and the ATRC logo
+ * right.
+ */
+#IMSlogo {
+    float: left;
+    width: 42px;
+    height: 60px;
+}
+
+#ATRClogo {
+    float: right;
+    width: 71px;
+    height: 42px;
+}
+
+/*
+ * English Francais links, <a href=..., as buttons.
+ * Note that a.linkbutton is also defined in "toc.css",
+ * but with a font size of 90%.
+ */
+p.enfrButtons {
+    padding-top: 1em;
+}
+
+a.redBorderButton {
+    color: black;
+    background: white;
+    padding: .40em 1.5em .30em 1.5em;
+    border: 2px solid red;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: verdana,arial,helvetica,sans-serif;
+}
+
+div.aligncenter {
+    padding-left: 1em;
+    padding-right: 1em;
+}
